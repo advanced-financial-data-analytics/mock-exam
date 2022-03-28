@@ -8,6 +8,15 @@
 - For the mock exam you must have attempted the questions and pushed a new version of the repo to github to recieve the mock exam solutions
 
 
+# Before you begin
+
+>1. Create an R Project in the q-rap RS workspace called ‘Mockie McMockFace’. Follow this url [invite](https://sso.rstudio.cloud/q-rap?redirect=https%3A%2F%2Frstudio.cloud%2Fspaces%2F231405%2Fjoin%3Faccess_code%3D0ntLcVUJQ_orMd5eha1oL93Fac8RRrAhgBzT3_rQ)
+>2. New Project > New Project from Git Repository
+>3. Go to [https://github.com/Time-series-financial-econometrics](https://github.com/Time-series-financial-econometrics)
+>4. Clone your version of the mock
+>5. Make sure packages `ffp2,knitr,tsfe` are loaded by running `(.packages())` in console.
+
+
 ## STATEMENT OF INTEGRITY
 By submitting the work, I declare that:
 
