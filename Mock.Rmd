@@ -1,0 +1,265 @@
+---
+title: "FIN7028 Time Series Financial Econometrics"
+author: "MOCK ALTERNATIVE ASSESSMENT"
+output:
+  html_document:
+    fig_height: 5
+    fig_width: 8
+    toc: yes
+    toc_depth: 1
+    toc_float:
+      collapsed: false
+    number_sections: false
+    theme: readable
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+library(fpp2)
+library(knitr)
+library(tsfe)
+knitr::opts_chunk$set(
+	message = FALSE,
+	warning = FALSE,
+	include = FALSE
+)
+```
+
+```{r out.width="50%",include=TRUE, echo=FALSE, fig.align='center'}
+include_graphics("figs/QUB_red_logo.jpg")
+```
+
+
+<!-- ![qub logo](figs/QUB_red_logo.jpg) -->
+
+>This is an face-to-face examination which must be completed in the allocated time and submitted via github. 
+
+# Academic integrity pledge
+>By submitting your answers to this examination paper, you confirm that: 
+
+>1. You have completed the examination on your own; 
+2. You did not collaborate with a third party during the examination; 
+3. You agree that your answers may be submitted to Turnitin; and 
+4. You agree to complete an oral assessment if requested to do so. 
+
+>Please note that plagiarism involves deliberately or inadvertently presenting someone else's ideas as your own. It is cheating. It does not just apply to direct quotations but summarised and paraphrased arguments too. Plagiarism is treated very seriously and usually results in disciplinary action.
+
+
+# Before you begin
+>1. Create an R Project in the q-rap RS workspace called 'Mockie McMockFace'. Follow this url invite: https://sso.rstudio.cloud/q-rap?redirect=https%3A%2F%2Frstudio.cloud%2Fspaces%2F231405%2Fjoin%3Faccess_code%3D0ntLcVUJQ_orMd5eha1oL93Fac8RRrAhgBzT3_rQ
+>2. New Project > New Project from Git Repository
+>3. Go to https://github.com/Time-series-financial-econometrics
+>4. Clone your version of the mock
+>5. Make sure packages `ffp2,knitr,tsfe` are loaded by running `(.packages())` in console.
+
+# Exam instructions
+
+> 1. This exam is worth 50%.  
+2. You will have three hours to answer a total of three questions. 
+3. You must complete both questions in section 1 and choose one question from section 2.
+
+# Section 1
+## Question 1
+> The following commodities series are avaliable in the `forecast` package; `gold`, `woolyrnq` and `gas`.  
+
+> a. Use an appropriate function to describe each series and write up your findings in your own words (10 marks)
+
+```{r}
+   help(gold)
+   help(woolyrnq)
+   help(gas)
+```
+
+> b. Plot each of these in separate plots in a professional manner. Describe what you see in your own words. (20 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+> c. What is the frequency of each commodity series? (10 marks)
+
+```{r}
+# Type your coded answer here
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+> d. Check each series for outliers. Which observations in which series do you suspect is an outlier? Briefly explain your answer. (10 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+## Question 2
+> Use the appropriate time series graphics functions to explore features from the following time series: `hsales`, `usdeaths`, `bricksq`, `sunspotarea`, `gasoline`.  
+
+> For each time series describe (using text below each R code chunk) the salient features of the data that an ethical econometrician should consider (50 marks)
+
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+# Section 2
+## Question 3
+>We will use the `bricksq` data (Australian quarterly clay brick production) for this exercise.
+
+> a. Use an STL decomposition to calculate the trend-cycle and seasonal indices. Briefly discuss your results (10 Marks) use `help(stl)` to research this function.
+
+```r{}
+help(stl)
+```
+
+You should experiment with having fixed or changing seasonality.  There's some change in variation, and `BoxCox.lambda(bricksq)` gives a value of 0.25.
+
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+> b. Compute and plot the seasonally adjusted data. (5 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+> c. Use a naive method to produce forecasts of the seasonally adjusted data. (5 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+> d. Use the `stlf` function to reseasonalize the results, giving forecasts for the original data. (10 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+> e. Do the residuals look uncorrelated? Provide statistical evidence and discuss your results (5 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+Comment on the results here
+
+
+> f. Repeat with a robust STL decomposition (using argument `robust=TRUE`). Does it make much difference? (5 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+Comment on the results here
+
+
+> g. Compare forecasts from `stlf` with those from `snaive`, using a test set comprising the last 2 years of data. Which would you use as a professional forecaster? Explain your answer. (10
+marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+Comment on the results here
+
+## Question 4
+
+> a. Plot the annual bituminous coal production in the United States from 1920 to 1968 (data set `bicoal`). Describe what you see (10 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+Comment on the results here
+
+
+> b. You decide to fit the following model to the series:
+$$y_t = c + \phi_1 y_{t-1} + \phi_2 y_{t-2} + \phi_3 y_{t-3} + \phi_4 y_{t-4} + e_t$$
+where $y_t$ is the coal production in year $t$ and $e_t$ is a white noise series.
+What sort of ARIMA model is this (i.e., what are $p$, $d$, and $q$)? (5 marks)
+
+
+
+> c. Explain why this model was chosen using the ACF and PACF. (10 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+Comment on the results here
+
+
+
+d. The last five values of the series are given below.
+
+|Year              | 1964| 1965| 1966| 1967| 1968|
+|:-----------------|----:|----:|----:|----:|----:|
+|Millions of tons  | 467 | 512 | 534 | 552 | 545 |
+
+```{r bicoalfit, echo=FALSE, cache=TRUE}
+fit <- Arima(bicoal, order=c(4,0,0))
+mu <- coef(fit)['intercept']
+phi1 <- coef(fit)['ar1']
+phi2 <- coef(fit)['ar2']
+phi3 <- coef(fit)['ar3']
+phi4 <- coef(fit)['ar4']
+intercept <- mu * (1-phi1-phi2-phi3-phi4)
+# Store rounded versions for printing
+c <- format(intercept, digits=2, nsmall=2)
+p1 <- format(phi1, digits=2, nsmall=2)
+p2 <- format(phi2, digits=2, nsmall=2)
+p3 <- format(phi3, digits=2, nsmall=2)
+p4 <- format(phi4, digits=2, nsmall=2)
+```
+
+> The estimated parameters are
+ $c = `r c`$,
+ $\phi_1 = `r p1`$,
+ $\phi_2 = `r p2`$,
+ $\phi_3 = `r p3`$, and
+ $\phi_4 = `r p4`$.
+ 
+> Without using the `forecast` function, calculate forecasts for the next three years (1969--1971). (15 marks)
+
+
+> e. Now fit the model in R and obtain the forecasts from the same model. How are they different from yours? Why? (10 marks)
+
