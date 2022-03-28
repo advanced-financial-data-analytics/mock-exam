@@ -26,19 +26,24 @@ When creating a project from GitHub using the “New Project from Git Repository
 If you have a linked GitHub account, your identity has already been configured for you. If you would like to change the name or email being used, you can use the commands below:
 
 ```
-git config —global user.email “you@example.com”
-git config —global user.name “Your Name”
+git config —-global user.email “you@example.com”
+```
+
+```
+git config —-global user.name “Your Name”
 ```
 To prevent your credentials from expiring after 15 minutes, a cache has been configured for 12 hours. The cache duration can be modified through the cache credential helper bundled with git. The command below would set the timeout to an hour:
 
 ```
-git config —global credential.helper ‘cache —timeout 3600’
+git config —-global credential.helper ‘cache —-timeout 3600’
 ```
 
 From the git documentation: “this command caches credentials in memory for use by future git programs. The stored credentials never touch the disk, and are forgotten after a configurable timeout. The cache is accessible over a Unix domain socket, restricted to the current user by filesystem permissions.”
 
 
-## STATEMENT OF INTEGRITY
+
+## Statement of integrity
+
 By submitting the work, I declare that:
 
 1. I have read and understood the University regulations relating to academic offences, including collusion and plagiarism: http://www.qub.ac.uk/directorates/AcademicStudentAffairs/AcademicAffairs/GeneralRegulations/Procedures/ProceduresforDealingwithAcademicOffences/
