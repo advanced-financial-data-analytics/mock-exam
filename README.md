@@ -17,6 +17,24 @@
 >5. Make sure packages `ffp2,knitr,tsfe` are loaded by running `(.packages())` in console.
 
 
+# If you get a git commit error
+
+GitHub credentials are not persisted across projects. For each project that is created from a GitHub repository, you will need to supply your credentials to push and pull from that repository.
+
+When creating a project from GitHub using the “New Project from Git Repository” command, you must supply the HTTPS URL from GitHub. You can then push / pull from within the project using HTTPS authentication, supplying your Personal Access Token (GitHub no longer supports password authentication). When creating a project from GitHub using the “New Project from Git Repository” command, you cannot use SSH Git authentication. Once a project is created, you can configure SSH authentication from within the IDE.
+
+If you have a linked GitHub account, your identity has already been configured for you. If you would like to change the name or email being used, you can use the commands below:
+
+```git config —global user.email “you@example.com”
+git config —global user.name “Your Name”
+```
+To prevent your credentials from expiring after 15 minutes, a cache has been configured for 12 hours. The cache duration can be modified through the cache credential helper bundled with git. The command below would set the timeout to an hour:
+
+`git config —global credential.helper ‘cache —timeout 3600’`
+
+From the git documentation: “this command caches credentials in memory for use by future git programs. The stored credentials never touch the disk, and are forgotten after a configurable timeout. The cache is accessible over a Unix domain socket, restricted to the current user by filesystem permissions.”
+
+
 ## STATEMENT OF INTEGRITY
 By submitting the work, I declare that:
 
