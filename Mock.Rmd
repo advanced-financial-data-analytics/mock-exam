@@ -20,17 +20,10 @@ library(knitr)
 library(tsfe)
 knitr::opts_chunk$set(
 	message = FALSE,
-	warning = FALSE,
-	include = FALSE
-)
+	warning = FALSE
+	)
 ```
 
-```{r out.width="50%",include=TRUE, echo=FALSE, fig.align='center'}
-include_graphics("figs/QUB_red_logo.jpg")
-```
-
-
-<!-- ![qub logo](figs/QUB_red_logo.jpg) -->
 
 >This is an face-to-face examination which must be completed in the allocated time and submitted via github. 
 
@@ -44,13 +37,15 @@ include_graphics("figs/QUB_red_logo.jpg")
 
 >Please note that plagiarism involves deliberately or inadvertently presenting someone else's ideas as your own. It is cheating. It does not just apply to direct quotations but summarised and paraphrased arguments too. Plagiarism is treated very seriously and usually results in disciplinary action.
 
+**Read the [README](README.md) instructions**
 
 # Before you begin
->1. Create an R Project in the q-rap RS workspace called 'Mockie McMockFace'. Follow this url invite: https://sso.rstudio.cloud/q-rap?redirect=https%3A%2F%2Frstudio.cloud%2Fspaces%2F231405%2Fjoin%3Faccess_code%3D0ntLcVUJQ_orMd5eha1oL93Fac8RRrAhgBzT3_rQ
->2. New Project > New Project from Git Repository
->3. Go to https://github.com/Time-series-financial-econometrics
->4. Clone your version of the mock
->5. Make sure packages `ffp2,knitr,tsfe` are loaded by running `(.packages())` in console.
+1. Create an R Project in the q-rap RS workspace called 'Mockie McMockFace'. Follow this url invite: https://sso.rstudio.cloud/q-rap?redirect=https%3A%2F%2Frstudio.cloud%2Fspaces%2F231405%2Fjoin%3Faccess_code%3D0ntLcVUJQ_orMd5eha1oL93Fac8RRrAhgBzT3_rQ
+2. New Project > New Project from Git Repository
+3. Go to https://github.com/Time-series-financial-econometrics
+4. Clone your version of the mock
+5. Make sure packages `ffp2,knitr,tsfe` are loaded by running `(.packages())` in console.
+6. GitHub credentials are not persisted across projects. For each project that is created from a GitHub repository, you will need to supply your credentials to push and pull from that repository. See section in README about setting up the git account for the project.
 
 # Exam instructions
 
