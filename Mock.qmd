@@ -1,20 +1,10 @@
 ---
 title: "FIN7028 Time Series Financial Econometrics"
-author: "MOCK ALTERNATIVE ASSESSMENT"
-output:
-  html_document:
-    fig_height: 5
-    fig_width: 8
-    toc: yes
-    toc_depth: 1
-    toc_float:
-      collapsed: false
-    number_sections: false
-    theme: readable
-    highlight: tango
+format: html
 ---
 
-```{r setup, include=FALSE}
+```{r}
+#| include: false
 library(fpp2)
 library(knitr)
 library(tsfe)
@@ -25,15 +15,14 @@ knitr::opts_chunk$set(
 ```
 
 
->This is an face-to-face examination which must be completed in the allocated time and submitted via github. 
+>This is an face-to-face examination which must be completed in the allocated time and submitted to canvas. 
 
 # Academic integrity pledge
 >By submitting your answers to this examination paper, you confirm that: 
 
 >1. You have completed the examination on your own; 
-2. You did not collaborate with a third party during the examination; 
-3. You agree that your answers may be submitted to Turnitin; and 
-4. You agree to complete an oral assessment if requested to do so. 
+2. You did not collaborate with a third party or AI assistant during the examination; 
+3. You agree to complete an oral assessment if requested to do so. 
 
 >Please note that plagiarism involves deliberately or inadvertently presenting someone else's ideas as your own. It is cheating. It does not just apply to direct quotations but summarised and paraphrased arguments too. Plagiarism is treated very seriously and usually results in disciplinary action.
 
@@ -42,15 +31,13 @@ knitr::opts_chunk$set(
 # Before you begin
 1. Create an R Project in the q-rap RS workspace called 'Mockie McMockFace'. Follow this url invite: https://sso.rstudio.cloud/q-rap?redirect=https%3A%2F%2Frstudio.cloud%2Fspaces%2F231405%2Fjoin%3Faccess_code%3D0ntLcVUJQ_orMd5eha1oL93Fac8RRrAhgBzT3_rQ
 2. New Project > New Project from Git Repository
-3. Go to https://github.com/Time-series-financial-econometrics
-4. Clone your version of the mock
+3. Paste in this url:https://github.com/advanced-financial-data-analytics/mock-exam.git to clone the mock-exam material
 5. Make sure packages `ffp2,knitr,tsfe` are loaded by running `(.packages())` in console.
-6. GitHub credentials are not persisted across projects. For each project that is created from a GitHub repository, you will need to supply your credentials to push and pull from that repository. See section in README about setting up the git account for the project.
 
 # Exam instructions
 
 > 1. This exam is worth 50%.  
-2. You will have three hours to answer a total of three questions. 
+2. You will have two hours to answer a total of three questions. 
 3. You must complete both questions in section 1 and choose one question from section 2.
 
 # Section 1
