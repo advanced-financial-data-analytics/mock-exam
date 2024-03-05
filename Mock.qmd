@@ -1,5 +1,6 @@
 ---
-title: "FIN7028 Time Series Financial Econometrics"
+title: "Mock Exam"
+subtitle: "Advanced Financial Data Analytics"
 format: html
 ---
 
@@ -29,10 +30,8 @@ knitr::opts_chunk$set(
 **Read the [README](README.md) instructions**
 
 # Before you begin
-1. Create an R Project in the q-rap RS workspace called 'Mockie McMockFace'. Follow this url invite: https://sso.rstudio.cloud/q-rap?redirect=https%3A%2F%2Frstudio.cloud%2Fspaces%2F231405%2Fjoin%3Faccess_code%3D0ntLcVUJQ_orMd5eha1oL93Fac8RRrAhgBzT3_rQ
-2. New Project > New Project from Git Repository
-3. Paste in this url:https://github.com/advanced-financial-data-analytics/mock-exam.git to clone the mock-exam material
-5. Make sure packages `ffp2,knitr,tsfe` are loaded by running `(.packages())` in console.
+1. Create an R Project in the q-rap RS workspace called 'FIN7028-Mock-Exam'. Follow this url [invite](https://sso.posit.cloud/q-rap?redirect=https%3A%2F%2Fposit.cloud%2Fspaces%2F488697%2Fjoin%3Faccess_code%3DVUadBS0ooGYsyQiK6u7NeP39oJc10jWgp3IQlJ2G)
+2. Make sure packages `ffp2,knitr,tsfe` are loaded by running `(.packages())` in console.
 
 # Exam instructions
 
@@ -111,6 +110,10 @@ knitr::opts_chunk$set(
 # It is your responsibility to make sure the code works
 
 ```
+## Question 3
+> In your own words write a reflective essay on your experience collaborating with GenAI for your analytics project? (35 marks)
+> What are the benefits and limitations of such an approach? (15 marks)
+
 
 # Section 2
 ## Question 3

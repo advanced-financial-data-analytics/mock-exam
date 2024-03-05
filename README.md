@@ -9,17 +9,17 @@
 
 # Before you begin
 
->1. This is the invite to the mock-exam workspace [invite](https://sso.rstudio.cloud/q-rap?redirect=https%3A%2F%2Frstudio.cloud%2Fspaces%2F231405%2Fjoin%3Faccess_code%3D0ntLcVUJQ_orMd5eha1oL93Fac8RRrAhgBzT3_rQ)
+>1. This is the invite to the mock-exam workspace [invite](https://sso.posit.cloud/q-rap?redirect=https%3A%2F%2Fposit.cloud%2Fspaces%2F488697%2Fjoin%3Faccess_code%3DVUadBS0ooGYsyQiK6u7NeP39oJc10jWgp3IQlJ2G)
 >2. Click on the assignment entitled “mock-exam” to create your own copy
->3. Open this project and begin the exam
->5. Make sure packages `ffp2,knitr,tsfe` are loaded by running `(.packages())` in console.
+>3. Open this project and begin the exam by populating the Mock.qmd file.
+>4. Make sure packages `ffp2,knitr,tsfe` are loaded by running `(.packages())` in console.
 
 
 ## Statement of integrity
 
 By submitting the work, I declare that:
 
-1. I have read and understood the University regulations relating to academic offences, including collusion and plagiarism: http://www.qub.ac.uk/directorates/AcademicStudentAffairs/AcademicAffairs/GeneralRegulations/Procedures/ProceduresforDealingwithAcademicOffences/
+1. I have read and understood the [University regulations relating to academic offences, including collusion and plagiarism](http://www.qub.ac.uk/directorates/AcademicStudentAffairs/AcademicAffairs/GeneralRegulations/Procedures/ProceduresforDealingwithAcademicOffences/)
 
 2. The submission is my own original work, and I have not collaborated with others or an AI assistant such as ChatGPT;
 
