@@ -1,0 +1,417 @@
+---
+title: "Solutions"
+subtitle: "Mock Exam 2024"
+format: html
+execute: 
+  warning: false
+  message: false
+---
+
+## Question 1
+
+>a. Plot each of these in separate plots in a professional manner. Describe what you see in your own words. (20 marks)
+
+```{r}
+#| echo: true
+#| cache: true
+library(ggplot2)
+
+# Gold prices
+ggplot(data.frame(Time = time(gold), Price = as.numeric(gold)), aes(x = Time, y = Price)) +
+  geom_line() +
+  labs(title = "Daily Morning Gold Prices", x = "Date", y = "US Dollars") +
+  theme_minimal()
+
+# Wool production
+ggplot(data.frame(Time = time(woolyrnq), Volume = as.numeric(woolyrnq)), aes(x = Time, y = Volume)) +
+  geom_line() +
+  labs(title = "Quarterly Wool Production in Australia", x = "Date", y = "Metric Tons") +
+  theme_minimal()
+
+# Gas production
+ggplot(data.frame(Time = time(gas), Volume = as.numeric(gas)), aes(x = Time, y = Volume)) +
+  geom_line() +
+  labs(title = "Australian Monthly Gas Production", x = "Date", y = "Petajoules") +
+  theme_minimal()
+```
+
+The plots reveal the following:
+
+1. Gold prices show an overall increasing trend with significant fluctuations. There appears to be an outlier with an unusually high price.
+
+2. Wool production exhibits a clear seasonal pattern with peaks and troughs. The overall production seems to be declining over time.
+
+3. Gas production shows an increasing trend with some seasonal variations. The series appears to be more stable compared to the other two.
+
+>b. What is the frequency of each commodity series? (5 marks)
+
+```{r}
+#| echo: true
+#| cache: true
+frequency(gold)     # Daily data (365 observations per year)
+frequency(woolyrnq) # Quarterly data (4 observations per year)
+frequency(gas)      # Monthly data (12 observations per year)
+```
+
+>c. Check each series for outliers. Which observations in which series do you suspect is an outlier? Briefly explain your answer. (10 marks)
+
+Certainly! Here's an expanded sample answer for question 1c:
+
+> c. Check each series for outliers. Which observations in which series do you suspect is an outlier? Briefly explain your answer. (10 marks)
+
+To check for outliers in the `gas`, `woolyrnq`, and `gold` series, we can use various methods such as visual inspection of plots, examining summary statistics, or applying statistical tests. Let's start with a simple visual approach using histograms.
+
+```{r}
+#| echo: true
+#| cache: true
+# Plotting histograms to visually inspect for outliers
+hist(gas, main = "Histogram of Gas")
+hist(woolyrnq, main = "Histogram of Woolyrnq")
+hist(gold, main = "Histogram of Gold")
+```
+
+From the histograms, we can observe that the `gold` series seems to have an unusual observation that stands out from the rest of the distribution. The `gas` and `woolyrnq` series don't show any clear outliers based on the histograms alone.
+
+To investigate further, let's find the observation with the maximum value in each series.
+
+```{r}
+#| echo: true
+#| cache: true
+# Finding the index of the maximum value in each series
+which.max(gas)
+which.max(woolyrnq)
+which.max(gold)
+
+# Retrieving the maximum value in each series
+max(gas)
+max(woolyrnq)
+max(gold)
+```
+
+The `which.max()` function identifies the index of the maximum value in each series. We can see that the maximum value in the `gold` series is significantly larger compared to the other values in the series.
+
+To confirm that the maximum value in the `gold` series is indeed an outlier, we can create a boxplot.
+
+```{r}
+#| echo: true
+#| cache: true
+# Creating a boxplot of the gold series
+boxplot(gold, main = "Boxplot of Gold")
+```
+
+The boxplot clearly shows the presence of an extreme outlier in the `gold` series, which corresponds to the maximum value we identified earlier.
+
+Based on the visual inspection and the statistical analysis, we can conclude that the `gold` series contains an outlier at the observation with the highest value. This outlier is significantly larger than the rest of the values in the series and lies far beyond the normal range of the data.
+
+It's important to investigate the cause of this outlier and determine whether it is a genuine extreme value or a data entry error. If it is a valid observation, it may have a significant impact on any analysis or modeling performed on the `gold` series. If it is determined to be an error, it may need to be corrected or removed before proceeding with further analysis.
+
+In summary, the `gold` series contains a suspected outlier at the observation with the maximum value, while no clear outliers were detected in the `gas` and `woolyrnq` series based on the visual inspection and summary statistics.
+
+## Question 2
+Certainly! Here's a more detailed sample answer for Question 2:
+
+To explore the features of the given time series (`hsales`, `usdeaths`, `bricksq`, `sunspotarea`, `gasoline`), we can use various time series graphics functions in R. Let's analyze each series individually.
+
+1. `hsales` (Monthly sales of new one-family houses, USA, 1973–1995):
+
+```{r}
+#| echo: true
+#| cache: true
+autoplot(hsales) + labs(title = "Monthly Sales of New One-Family Houses, USA, 1973-1995")
+ggseasonplot(hsales, year.labels = TRUE, year.labels.left = TRUE)
+ggsubseriesplot(hsales)
+gglagplot(hsales)
+ggAcf(hsales)
+```
+
+- The time plot shows a clear seasonal pattern and some long-term fluctuations.
+- The seasonal plot confirms a strong and consistent seasonal pattern.
+- The subseries plot shows that the seasonal pattern is similar across years.
+- The lag plot indicates a positive relationship between consecutive observations, possibly due to trend or seasonal effects.
+- The ACF plot shows significant autocorrelations at multiples of lag 12, confirming the presence of seasonality.
+
+2. `usdeaths` (Monthly accidental deaths in the USA, 1973–1978):
+
+```{r}
+#| echo: true
+#| cache: true
+autoplot(usdeaths) + labs(title = "Monthly Accidental Deaths in the USA, 1973-1978")
+ggseasonplot(usdeaths, year.labels = TRUE, year.labels.left = TRUE)
+ggsubseriesplot(usdeaths)
+gglagplot(usdeaths)
+ggAcf(usdeaths)
+```
+
+- The time plot shows a clear seasonal pattern but no obvious trend.
+- The seasonal plot confirms the presence of seasonality, with higher deaths in summer months.
+- The subseries plot shows that the seasonal pattern is consistent across years.
+- The lag plot shows a positive relationship between consecutive observations due to seasonality.
+- The ACF plot has significant autocorrelations at multiples of lag 12, confirming seasonality.
+
+3. `bricksq` (Quarterly clay brick production, Australia, 1956–1995):
+
+```{r}
+#| echo: true
+#| cache: true
+autoplot(bricksq) + labs(title = "Quarterly Clay Brick Production, Australia, 1956-1995")
+ggseasonplot(bricksq, year.labels = TRUE, year.labels.left = TRUE)
+ggsubseriesplot(bricksq)
+gglagplot(bricksq)
+ggAcf(bricksq)
+```
+
+- The time plot shows a strong increasing trend and some seasonal fluctuations.
+- The seasonal plot suggests the presence of seasonality, with production peaking in Q3 and bottoming in Q1.
+- The subseries plot confirms that the seasonal pattern is generally consistent across years.
+- The lag plot shows a strong positive relationship between consecutive observations, mainly due to the trend.
+- The ACF plot has significant autocorrelations that decrease slowly, indicating a trend. There are also spikes at multiples of lag 4, suggesting seasonality.
+
+4. `sunspotarea` (Annual mean sunspot area, 1875–2015):
+
+```{r}
+#| echo: true
+#| cache: true
+autoplot(sunspotarea) + labs(title = "Annual Mean Sunspot Area, 1875-2015")
+gglagplot(sunspotarea)
+ggAcf(sunspotarea)
+```
+
+- The time plot shows a clear cyclical pattern with a period of around 11 years.
+- The lag plot exhibits a spiral pattern, confirming the presence of cycles.
+- The ACF plot has a sinusoidal pattern, alternating between positive and negative autocorrelations, which is characteristic of cyclical behavior.
+
+5. `gasoline` (US finished motor gasoline product, monthly, 1991–2016):
+
+```{r}
+#| echo: true
+#| cache: true
+autoplot(gasoline) + labs(title = "US Finished Motor Gasoline Product, Monthly, 1991-2016")
+ggseasonplot(gasoline, year.labels = TRUE, year.labels.left = TRUE)
+gglagplot(gasoline)
+ggAcf(gasoline)
+```
+
+- The time plot shows an increasing trend and strong seasonality.
+- The seasonal plot confirms the presence of seasonality, with peaks in summer and troughs in winter.
+- The lag plot is not very informative due to the strong seasonality and trend.
+- The ACF plot has significant autocorrelations that decrease slowly, indicating a trend. The seasonal spikes are also evident, confirming seasonality.
+
+In summary, the analysis of these time series reveals the following features:
+
+- `hsales` and `usdeaths` exhibit strong seasonality but no clear trend.
+- `bricksq` and `gasoline` show both trend and seasonality.
+- `sunspotarea` has a clear cyclical pattern with a period of around 11 years.
+
+The appropriate time series graphics functions help in identifying and confirming the presence of trend, seasonality, and cyclical behavior in the given time series.
+
+## Question 3
+Certainly! Here's a more detailed sample answer for Question 3:
+
+In this question, we will analyze the `bricksq` data, which represents the Australian quarterly clay brick production, using STL decomposition and various forecasting methods.
+
+a. STL decomposition and trend-cycle and seasonal indices:
+
+First, we'll perform an STL decomposition to separate the time series into trend, seasonal, and remainder components. We'll use a Box-Cox transformation with λ = 0.25 to stabilize the variance.
+
+```{r}
+#| echo: true
+#| cache: true
+y <- BoxCox(bricksq, lambda = 0.25)
+fit <- stl(y, s.window = "periodic")
+autoplot(fit)
+```
+
+The STL decomposition reveals the following:
+- The data exhibits a strong increasing trend over time.
+- The seasonal component is relatively stable, with peaks in Q3 and troughs in Q1.
+- The remainder component shows some fluctuations, particularly during the 1970s and early 1980s.
+
+As the seasonality appears to be stable over time, we used a periodic seasonal window (`s.window = "periodic"`).
+
+b. Seasonally adjusted data:
+
+To compute and plot the seasonally adjusted data, we can use the `seasadj()` function.
+
+```{r}
+#| echo: true
+#| cache: true
+autoplot(bricksq, series = "Data") +
+  autolayer(seasadj(fit), series = "Seasonally Adjusted") +
+  xlab("Year") + ylab("Bricks (millions)") +
+  ggtitle("Quarterly Clay Brick Production, Australia")
+```
+
+The seasonally adjusted data removes the seasonal component from the original data, making the trend more apparent.
+
+c. Naive forecasts on seasonally adjusted data:
+
+We can produce forecasts of the seasonally adjusted data using a naive method, which assumes that future values will be equal to the last observed value.
+
+```{r}
+#| echo: true
+#| cache: true
+fit_naive <- naive(seasadj(fit))
+autoplot(fit_naive, series = "Naive Forecast") +
+  autolayer(seasadj(fit), series = "Seasonally Adjusted") +
+  xlab("Year") + ylab("Bricks (millions)") +
+  ggtitle("Naive Forecast of Seasonally Adjusted Data")
+```
+
+The naive method simply extends the last observed value of the seasonally adjusted data as the forecast.
+
+d. Reseasonalize the results:
+
+To reseasonalize the results and obtain forecasts for the original data, we can use the `stlf()` function, which combines the STL decomposition with a chosen forecasting method.
+
+```{r}
+#| echo: true
+#| cache: true
+fc <- stlf(bricksq, s.window = "periodic", method = "naive", lambda = 0.25)
+autoplot(fc) +
+  xlab("Year") + ylab("Bricks (millions)") +
+  ggtitle("Reseasonalized Forecasts using STL Decomposition and Naive Method")
+```
+
+The `stlf()` function adds the seasonal component back to the forecasted trend and remainder components to obtain the final forecasts for the original data.
+
+e. Residual diagnostics:
+
+To check if the residuals are uncorrelated, we can use the `checkresiduals()` function.
+
+```{r}
+#| echo: true
+#| cache: true
+checkresiduals(fc)
+```
+
+The residual diagnostics show that:
+- The standardized residuals appear to be approximately normally distributed.
+- The ACF plot of the residuals shows a significant spike at lag 1, indicating some remaining autocorrelation.
+- The p-values for the Ljung-Box test are below 0.05 for most lags, suggesting that the residuals are not entirely uncorrelated.
+
+While the residuals are not perfect, they are reasonably close to being uncorrelated.
+
+f. Robust STL decomposition:
+
+We can repeat the analysis using a robust STL decomposition, which is less sensitive to outliers.
+
+```{r}
+#| echo: true
+#| cache: true
+fc_robust <- stlf(bricksq, s.window = "periodic", method = "naive", lambda = 0.25, robust = TRUE)
+autoplot(fc_robust) +
+  xlab("Year") + ylab("Bricks (millions)") +
+  ggtitle("Reseasonalized Forecasts using Robust STL Decomposition and Naive Method")
+
+checkresiduals(fc_robust)
+```
+
+In this case, the robust STL decomposition does not make a significant difference, as there are no extreme outliers near the end of the series. The residual diagnostics are similar to those from the non-robust decomposition.
+
+g. Comparison of `stlf` and `snaive` forecasts:
+
+Finally, we'll compare the forecasts from `stlf` with those from `snaive`, using a test set comprising the last 2 years of data.
+
+```{r}
+#| echo: true
+#| cache: true
+bricks1 <- window(bricksq, end = c(1987, 4))
+fc1 <- stlf(bricks1, s.window = "periodic", method = "naive", lambda = 0.25)
+fc2 <- snaive(bricks1)
+
+accuracy(fc1, bricksq)
+accuracy(fc2, bricksq)
+```
+
+The accuracy measures (RMSE, MAE, MAPE, and MASE) indicate that the `snaive` method performs better than the `stlf` method with naive forecasting on this particular test set. However, it's important to note that the test set is relatively small (only 8 observations), so the results should be interpreted with caution.
+
+As a professional forecaster, I would consider using the `snaive` method in this case, as it is simpler and appears to be more accurate on the given test set. However, I would also investigate further, using a larger test set and considering other forecasting methods before making a final decision. It's essential to assess the robustness of the results and to take into account the limitations of the data and the specific requirements of the forecasting problem at hand.
+
+In summary, this question demonstrates the application of STL decomposition, naive forecasting, and seasonal naive forecasting to the `bricksq` data. The analysis reveals the presence of trend and seasonality in the data, and the comparison of different forecasting methods provides insight into their relative performance on a small test set.
+
+## Question 4
+
+Certainly! Here's a detailed sample answer for Question 4:
+
+In this question, we will analyze the annual bituminous coal production in the United States from 1920 to 1968 and fit an ARIMA model to the data.
+
+a. Plotting the time series:
+
+First, let's plot the `bicoal` time series to visualize the data and identify any apparent patterns or trends.
+
+```{r}
+#| echo: true
+#| cache: true
+autoplot(bicoal) +
+  xlab("Year") + ylab("Millions of tons") +
+  ggtitle("Annual Bituminous Coal Production in the United States, 1920-1968")
+```
+
+The plot shows an overall increasing trend in the bituminous coal production over the given period. There are some fluctuations around the trend, but no clear seasonality or cyclicity is evident.
+
+b. Identifying the ARIMA model:
+
+The given model is an ARIMA(4,0,0) model, which can be written as:
+
+$y_t = c + \phi_1 y_{t-1} + \phi_2 y_{t-2} + \phi_3 y_{t-3} + \phi_4 y_{t-4} + e_t$
+
+where:
+- $y_t$ is the coal production in year $t$
+- $c$ is a constant term
+- $\phi_1, \phi_2, \phi_3, \phi_4$ are the autoregressive coefficients
+- $e_t$ is a white noise series
+
+In this model:
+- $p = 4$ (autoregressive order)
+- $d = 0$ (no differencing)
+- $q = 0$ (no moving average term)
+
+c. Justifying the model choice using ACF and PACF:
+
+To justify the choice of the ARIMA(4,0,0) model, we can examine the ACF and PACF plots of the `bicoal` time series.
+
+```{r}
+#| echo: true
+#| cache: true
+ggAcf(bicoal)
+ggPacf(bicoal)
+```
+
+The ACF plot shows a slow decay in the autocorrelations, which is characteristic of an autoregressive process. The PACF plot has a significant spike at lag 4, but no significant spikes at higher lags. This suggests that an AR(4) model might be appropriate for the data.
+
+d. Forecasting the next three years:
+
+Given the last five values of the series, we can manually calculate the forecasts for the next three years (1969-1971) using the estimated ARIMA(4,0,0) model.
+
+The estimated parameters are:
+- $c = `r c`$
+- $\phi_1 = `r p1`$
+- $\phi_2 = `r p2`$
+- $\phi_3 = `r p3`$
+- $\phi_4 = `r p4`$
+
+Using these parameters and the last four observed values, we can calculate the forecasts as follows:
+
+$\hat{y}_{1969} = `r c` + `r p1` \times 545 + `r p2` \times 552 + `r p3` \times 534 + `r p4` \times 512 = `r f1`$
+
+$\hat{y}_{1970} = `r c` + `r p1` \times `r f1` + `r p2` \times 545 + `r p3` \times 552 + `r p4` \times 534 = `r f2`$
+
+$\hat{y}_{1971} = `r c` + `r p1` \times `r f2` + `r p2` \times `r f1` + `r p3` \times 545 + `r p4` \times 552 = `r format(intercept + phi1*f2 + phi2*f1 + phi3*545 + phi4*552, nsmall = 2)`$
+
+e. Comparing manual forecasts with R's `forecast` function:
+
+Now, let's fit the ARIMA(4,0,0) model in R and obtain the forecasts using the `forecast` function.
+
+```{r}
+#| echo: true
+#| cache: true
+fit <- Arima(bicoal, order = c(4, 0, 0))
+fc <- forecast(fit, h = 3)
+fc
+```
+
+The forecasts obtained from the `forecast` function are very close to the manually calculated values. Any minor differences can be attributed to rounding errors in the manual calculations.
+
+The `forecast` function uses the maximum likelihood estimates of the model parameters and computes the forecasts based on these estimates. It also provides additional information, such as the standard errors of the forecasts and the confidence intervals.
+
+In summary, this question demonstrates the process of fitting an ARIMA(4,0,0) model to the `bicoal` time series. The model choice is justified using the ACF and PACF plots, which suggest the presence of an autoregressive process of order 4. The forecasts for the next three years are calculated manually using the estimated model parameters and compared with the results obtained from the `forecast` function in R. The analysis highlights the importance of understanding the underlying model structure and the ability to interpret the results in the context of the given problem.

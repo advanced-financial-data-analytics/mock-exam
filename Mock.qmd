@@ -1,5 +1,5 @@
 ---
-title: "Mock Exam"
+title: "Mock Exam 2024"
 subtitle: "Advanced Financial Data Analytics"
 format: 
  html:
@@ -48,9 +48,8 @@ library(tsfe)
 > a. Use an appropriate function to describe each series and write up your findings in your own words (10 marks)
 
 ```{r}
-   help(gold)
-   help(woolyrnq)
-   help(gas)
+# Type the R code answer here
+# It is your responsibility to make sure the code works
 ```
 
 > b. Plot each of these in separate plots in a professional manner. Describe what you see in your own words. (10 marks)
@@ -60,7 +59,7 @@ library(tsfe)
 # It is your responsibility to make sure the code works
 ```
 
-> c. What is the frequency of each commodity series? (10 marks)
+> c. What is the frequency of each commodity series? (5 marks)
 
 ```{r}
 # Type your coded answer here
@@ -69,7 +68,7 @@ library(tsfe)
 
 ```
 
-> d. Check each series for outliers. Which observations in which series do you suspect is an outlier? Briefly explain your answer. (10 marks)
+> d. Check each series for outliers. Which observations in which series do you suspect is an outlier? Briefly explain your answer. (15 marks)
 
 ```{r}
 # Type the R code answer here
@@ -112,10 +111,6 @@ library(tsfe)
 # It is your responsibility to make sure the code works
 
 ```
-## Question 3
-> In your own words write a reflective essay on your experience collaborating with GenAI for your analytics project? (35 marks)
-
-> What are the benefits and limitations of such an approach? (15 marks)
 
 
 # Section 2
@@ -251,3 +246,8 @@ p4 <- format(phi4, digits=2, nsmall=2)
 
 > e. Now fit the model in R and obtain the forecasts from the same model. How are they different from yours? Why? (10 marks)
 
+
+## Question 5
+> In your own words write a reflective essay on your experience collaborating with Large Language Models for your analytics project? (35 marks)
+
+> What are the benefits and limitations of such an approach? (15 marks)
