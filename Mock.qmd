@@ -1,7 +1,13 @@
 ---
 title: "Mock Exam"
 subtitle: "Advanced Financial Data Analytics"
-format: html
+format: 
+ html:
+   embed-resources: true
+execute:
+  echo: false
+  warning: false
+  message: false
 ---
 
 ```{r}
@@ -9,10 +15,6 @@ format: html
 library(fpp2)
 library(knitr)
 library(tsfe)
-knitr::opts_chunk$set(
-	message = FALSE,
-	warning = FALSE
-	)
 ```
 
 
@@ -51,7 +53,7 @@ knitr::opts_chunk$set(
    help(gas)
 ```
 
-> b. Plot each of these in separate plots in a professional manner. Describe what you see in your own words. (20 marks)
+> b. Plot each of these in separate plots in a professional manner. Describe what you see in your own words. (10 marks)
 
 ```{r}
 # Type the R code answer here
@@ -112,6 +114,7 @@ knitr::opts_chunk$set(
 ```
 ## Question 3
 > In your own words write a reflective essay on your experience collaborating with GenAI for your analytics project? (35 marks)
+
 > What are the benefits and limitations of such an approach? (15 marks)
 
 
