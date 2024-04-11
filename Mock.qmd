@@ -14,7 +14,7 @@ execute:
 #| include: false
 library(fpp2)
 library(knitr)
-library(tsfe)
+library(forecast)
 ```
 
 
@@ -48,6 +48,7 @@ library(tsfe)
 > a. Use an appropriate function to describe each series and write up your findings in your own words (10 marks)
 
 ```{r}
+gold
 # Type the R code answer here
 # It is your responsibility to make sure the code works
 ```
