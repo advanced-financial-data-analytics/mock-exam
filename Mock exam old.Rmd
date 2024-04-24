@@ -1,0 +1,323 @@
+---
+title: "FIN7028 Time Series Financial Econometrics"
+author: "MOCK ALTERNATIVE ASSESSMENT"
+output:
+  html_document:
+    fig_height: 5
+    fig_width: 8
+    toc: yes
+    toc_depth: 1
+    toc_float:
+      collapsed: false
+    number_sections: false
+    theme: readable
+    highlight: tango
+---
+
+```{r setup, include=FALSE}
+library(fpp2)
+library(knitr)
+knitr::opts_chunk$set(
+	message = FALSE,
+	warning = FALSE,
+	echo = T,
+	eval = T
+)
+```
+
+```{r out.width="50%", echo=FALSE, fig.align='center'}
+include_graphics("figs/QUB_red_logo.jpg")
+```
+
+
+<!-- ![qub logo](figs/QUB_red_logo.jpg) -->
+
+>This is an online examination which must be completed in the allocated time and submitted via Canvas. 
+
+# Academic integrity pledge
+>By submitting your answers to this examination paper, you confirm that: 
+
+>1. You have completed the examination on your own; 
+2. You did not collaborate with a third party during the examination; 
+3. You agree that your answers may be submitted to Turnitin; and 
+4. You agree to complete an oral assessment if requested to do so. 
+
+>Please note that plagiarism involves deliberately or inadvertently presenting someone else's ideas as your own. It is cheating. It does not just apply to direct quotations but summarised and paraphrased arguments too. Plagiarism is treated very seriously and usually results in disciplinary action.
+
+
+# Before you begin
+>1. Open an R script and save it using your student ID as the file name
+>2. File > New File > R script
+>3. Then run the following code to install and load `fpp2`. The `dependencies = TRUE` argument should ensure all other packages that depend on this package are also installed.
+
+```{r eval=F, echo=TRUE}
+install.packages("fpp2",dependencies = TRUE)
+library(fpp2)
+```
+>4. Use a word document or pen and paper to record your text answers.
+
+# Exam instructions
+
+> 1. This exam is worth 50%.  You will have two and a half hours to answer a total of three questions;  all the questions in section 1 and one question from section 2.
+> 2. At the end of the exam you must upload a numbered R script and a numbered version of your written answers to Canvas.
+
+# Section 1
+## Question 1
+> The following commodities series are avaliable in the `forecast` package; `gold`, `woolyrnq` and `gas`.  Use an appropriate function to describe each series and write up your findings in your own words (10 marks)
+
+```{r, echo=TRUE, cache=TRUE, eval=FALSE}
+   help(gold)
+   help(woolyrnq)
+   help(gas)
+```
+
+>   a. Plot each of these in separate plots in a professional manner. Describe what you see in your own words. (20 marks)
+
+```{r, echo=TRUE, cache=TRUE}
+autoplot(gold) + labs(title="Daily morning gold prices from 1 January 1985 to 31 March 1989",x="",y="US dollars") 
+autoplot(woolyrnq) + labs(title="Quarterly production of woollen yarn in Australia from March 1965 to Sept 1994",x="",y="") 
+autoplot(gas) + labs(title="Quarterly production of woollen yarn in Australia from March 1965 to Sept 1994",x="",y="") 
+```
+
+>    b. What is the frequency of each commodity series? (10 marks)
+
+```{r, echo=TRUE, cache=TRUE}
+frequency(gold)
+frequency(woolyrnq)
+frequency(gas)
+```
+
+>    c. Check each series for outliers. Which observations in which series do you suspect is an outlier? Briefly explain your answer. (10 marks)
+
+```{r, echo=TRUE, cache=TRUE}
+# A simple distribution plot should provide some indication of unusual observations
+hist(gas)
+hist(woolyrnq)
+hist(gold)
+# The outlier observation is
+which.max(gold)
+# The value of the outlier observation is
+gold[which.max(gold)]
+# A simple distribution plot reveal a very large value well outside the distribution of the rest of the data.  This is likely an outlier
+hist(gold)
+```
+
+## Question 2
+> Use the appropriate time series graphics functions to explore features from the following time series: `hsales`, `usdeaths`, `bricksq`, `sunspotarea`, `gasoline`. (50 marks)
+>
+    + Can you spot any seasonality, cyclicity and trend?
+    + What do you learn about the series?
+
+```{r, echo=TRUE, cache=TRUE}
+autoplot(hsales)
+ggseasonplot(hsales)
+ggsubseriesplot(hsales)
+gglagplot(hsales)
+ggAcf(hsales)
+```
+
+  + Seasonality evident in all plots
+  + Cyclicity seen in first two plots
+  + No trend
+  + ACF only shows seasonality. Cycle length too long to show up here.
+
+```{r, echo=TRUE, cache=TRUE}
+autoplot(usdeaths)
+ggseasonplot(usdeaths)
+ggsubseriesplot(usdeaths)
+gglagplot(usdeaths)
+ggAcf(usdeaths)
+```
+
+  + Seasonality evident in all plots
+  + No cyclicity or trend
+
+```{r, echo=TRUE, cache=TRUE}
+autoplot(bricksq)
+ggseasonplot(bricksq)
+ggsubseriesplot(bricksq)
+gglagplot(bricksq)
+ggAcf(bricksq)
+```
+
+  + Q1 is the lowest and Q3 is the highest.
+  + 1982 and 1983 are unusual, especially the last quarter of 1982 and the first quarter of 1983. This was a recession.
+  + Seasonality weak compared to trend
+  + Cyclicity slightly evident in time plot and subseries plot
+  + positive relationships in lag plot dominated by the strong trend   + ACF only shows seasonality and trend. Cycle length too long to show up here.
+
+```{r, echo=TRUE, cache=TRUE}
+autoplot(sunspotarea)
+#ggseasonplot(sunspotarea)
+#ggsubseriesplot(sunspotarea)
+gglagplot(sunspotarea)
+ggAcf(sunspotarea)
+```
+
+  + Data is not seasonal data hence we don't run commands for seasonal features.
+  + Cyclicity seen in all plots (cycle length around 10-11)
+
+```{r, echo=TRUE, cache=TRUE}
+autoplot(gasoline)
+ggseasonplot(gasoline)
+#ggsubseriesplot(gasoline)
+gglagplot(gasoline)
+ggAcf(gasoline)
+```
+
+  + Seasonality clear in seasonal plot
+  + Non-integer seasonality makes the subseries plot fail
+  + Seasonal length too long for the lagplot to be useful
+  + ACF plot shows the seasonality and trend clearly
+
+
+# Section 2
+## Question 3
+>We will use the `bricksq` data (Australian quarterly clay brick production) for this exercise.
+
+>    a. Use an STL decomposition to calculate the trend-cycle and seasonal indices. Briefly discuss your results (10 Marks)
+
+Yuo should experiment with having fixed or changing seasonality.  There's some change in variation, and `BoxCox.lambda(bricksq)` gives a value of 0.25.
+
+```{r}
+y <- BoxCox(bricksq, lambda=0.25)
+fit <- stl(y, s.window='periodic')
+autoplot(fit)
+```
+
+The seasonality looks fairly stable, so I've used a periodic `s.window`.
+
+>    b. Compute and plot the seasonally adjusted data. (5 marks)
+
+```{r}
+fit %>% seasadj() %>% autoplot()
+```
+
+>    c. Use a naive method to produce forecasts of the seasonally adjusted data. (5 marks)
+
+```{r}
+fit %>% seasadj() %>% naive() %>% autoplot()
+
+```
+
+>    d. Use an appropriate function to reseasonalize the results, giving forecasts for the original data. (10 marks)
+
+```{r}
+fc <- stlf(bricksq, s.window='periodic', method='naive', lambda=0.25)
+autoplot(fc)
+```
+
+>    e. Do the residuals look uncorrelated? Provide statistical evidence and discuss your results (5 marks)
+
+```{r}
+checkresiduals(fc)
+```
+
+Not too bad, but some small autocorrelation remaining.
+
+>    f. Repeat with a robust STL decomposition. Does it make much difference? (5 marks)
+
+```{r}
+fc <- stlf(bricksq, s.window='periodic', method='naive', lambda=0.25, robust=TRUE)
+autoplot(fc)
+checkresiduals(fc)
+```
+
+It makes little difference here as there aren't any major outliers, and those that are there are not near the end of the series.
+
+>    g. Compare forecasts from `stlf` with those from `snaive`, using a test set comprising the last 2 years of data. Which would you use as a professional forecaster? Explain your answer. (10
+marks)
+
+```{r}
+bricks1 <- window(bricksq, end = c(1987,4))
+fc1 <- stlf(bricks1, s.window='periodic', method='naive', lambda=0.25)
+fc2 <- snaive(bricks1)
+accuracy(fc1, bricksq)
+accuracy(fc2, bricksq)
+```
+
+`snaive` does better here, although this is based on a test set of only 8 observations.
+
+## Question 4
+> a. Plot the annual bituminous coal production in the United States from 1920 to 1968 (data set \verb|bicoal|). Describe what you see (10 marks)
+
+```{r}
+autoplot(bicoal)
+```
+
+> b. You decide to fit the following model to the series:
+$$y_t = c + \phi_1 y_{t-1} + \phi_2 y_{t-2} + \phi_3 y_{t-3} + \phi_4 y_{t-4} + e_t$$
+where $y_t$ is the coal production in year $t$ and $e_t$ is a white noise series.
+What sort of ARIMA model is this (i.e., what are $p$, $d$, and $q$)? (5 marks)
+
+ARIMA(4,0,0). $p=4$, $d=0$, $q=0$.
+
+> c. Explain why this model was chosen using the ACF and PACF. (10 marks)
+
+```{r}
+ggtsdisplay(bicoal)
+```
+
+The PACF has a signifcant spike at lag 4, but none at higher lags.
+
+> d. The last five values of the series are given below.
+>
+>|Year              | 1964| 1965| 1966| 1967| 1968|
+>|:-----------------|----:|----:|----:|----:|----:|
+>|Millions of tons  | 467 | 512 | 534 | 552 | 545 |
+
+```{r bicoalfit, echo=FALSE, cache=TRUE}
+fit <- Arima(bicoal, order=c(4,0,0))
+mu <- coef(fit)['intercept']
+phi1 <- coef(fit)['ar1']
+phi2 <- coef(fit)['ar2']
+phi3 <- coef(fit)['ar3']
+phi4 <- coef(fit)['ar4']
+intercept <- mu * (1-phi1-phi2-phi3-phi4)
+# Store rounded versions for printing
+c <- format(intercept, digits=2, nsmall=2)
+p1 <- format(phi1, digits=2, nsmall=2)
+p2 <- format(phi2, digits=2, nsmall=2)
+p3 <- format(phi3, digits=2, nsmall=2)
+p4 <- format(phi4, digits=2, nsmall=2)
+```
+
+> The estimated parameters are
+ $c = `r c`$,
+ $\phi_1 = `r p1`$,
+ $\phi_2 = `r p2`$,
+ $\phi_3 = `r p3`$, and
+ $\phi_4 = `r p4`$.
+ Without using the `forecast` function, calculate forecasts for the next three years (1969--1971). (15 marks)
+
+\begin{align*}
+\hat{y}_{T+1|T}
+  &= c + \phi_1 y_{T} + \phi_2 y_{T-1} + \phi_3 y_{T-2} + \phi_4 y_{T-3} \\
+  &= `r c` + `r p1` *545  `r p2` *552 + `r p3` *534  `r p4` *512 \\
+  &= `r format(f1 <- intercept + phi1*545 + phi2*552 + phi3*534 + phi4*512, nsmall=2)` \\
+\hat{y}_{T+2|T}
+  &= c + \phi_1 \hat{y}_{T+1|T} + \phi_2 y_{T} + \phi_3 y_{T-1} + \phi_4 y_{T-2} \\
+  &= `r c` + `r p1`* `r format(f1,nsmall=2)`  `r p2` *545 + `r p3` *552  `r p4`* 534 \\
+  &= `r format(f2 <- intercept + phi1*f1 + phi2*545 + phi3*552 + phi4*534, nsmall=2)` \\
+\hat{y}_{T+3|T}
+  &= c + \phi_1 \hat{y}_{T+2|T} + \phi_2 \hat{y}_{T+1|T} + \phi_3 y_{T} + \phi_4 y_{T-1} \\
+  &= `r c` + `r p1`* `r format(f2,nsmall=2)`  `r p2` * `r format(f1,nsmall=2)` + `r p3` *545  `r p4`* 552 \\
+  &= `r format(intercept + phi1*f2 + phi2*f1 + phi3*545 + phi4*552, nsmall=2)` \\
+\end{align*}
+
+> b. Now fit the model in R and obtain the forecasts from the same model. How are they different from yours? Why? (10 marks)
+
+```{r}
+forecast(fit, h=3)
+```
+
+Again, any differences between these values and those computed "by hand" are probably due to rounding errors.
+
+
+### In the real exam
+1. The above written answers are good starting points which you should elaborate on in the formal exam.
+2. The formal exam will have the same structure, requiring 3 questions to be answered in 3 hours for 50%.  
+3. You will need to write **clearly numbered** answers either on paper or in an word document.  
+  * If your are writing your answer on paper take a photo of them and upload at the end.  
+  * You will also need to save and upload a **clearly numbered ** R script.
+5. If you are using a word document simply upload this (including pasted R code) at the end.
