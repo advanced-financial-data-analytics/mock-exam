@@ -1,7 +1,7 @@
 ---
 title: "Solutions"
 subtitle: "Mock Exam 2024"
-format: html
+format: pdf
 execute: 
   warning: false
   message: false
