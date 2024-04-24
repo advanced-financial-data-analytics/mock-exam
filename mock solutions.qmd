@@ -5,10 +5,14 @@ format: html
 execute: 
   warning: false
   message: false
-editor: 
-  markdown: 
-    wrap: 72
+embed-resources: true
 ---
+
+```{r}
+library(fpp2)
+library(knitr)
+library(forecast)
+```
 
 ## Question 1
 
@@ -119,7 +123,7 @@ z-score of the outlier value and compare it to a threshold (e.g., 3 or
 ```{r}
 #| echo: true
 #| cache: true
-z_score <- (gold[outlier_index] - mean(gold)) / sd(gold)
+z_score <- (gold[outlier_index] - mean(gold,na.rm=T)) / sd(gold,na.rm=T)
 z_score
 ```
 
@@ -472,8 +476,7 @@ and PACF plots of the `bicoal` time series.
 ```{r}
 #| echo: true
 #| cache: true
-ggAcf(bicoal)
-ggPacf(bicoal)
+ggtsdisplay(bicoal)
 ```
 
 The ACF plot shows a slow decay in the autocorrelations, which is
@@ -487,17 +490,51 @@ Given the last five values of the series, we can manually calculate the
 forecasts for the next three years (1969-1971) using the estimated
 ARIMA(4,0,0) model.
 
-The estimated parameters are: - $c = `r c`$ - $\phi_1 = `r p1`$ -
-$\phi_2 = `r p2`$ - $\phi_3 = `r p3`$ - $\phi_4 = `r p4`$
+>|Year              | 1964| 1965| 1966| 1967| 1968|
+>|:-----------------|----:|----:|----:|----:|----:|
+>|Millions of tons  | 467 | 512 | 534 | 552 | 545 |
 
-Using these parameters and the last four observed values, we can
-calculate the forecasts as follows:
 
-$\hat{y}_{1969} = `r c` + `r p1` \times 545 + `r p2` \times 552 + `r p3` \times 534 + `r p4` \times 512 = `r f1`$
+```{r}
+fit <- Arima(bicoal, order=c(4,0,0))
+mu <- coef(fit)['intercept']
+phi1 <- coef(fit)['ar1']
+phi2 <- coef(fit)['ar2']
+phi3 <- coef(fit)['ar3']
+phi4 <- coef(fit)['ar4']
+intercept <- mu * (1-phi1-phi2-phi3-phi4)
+# Store rounded versions for printing
+c <- format(intercept, digits=2, nsmall=2)
+p1 <- format(phi1, digits=2, nsmall=2)
+p2 <- format(phi2, digits=2, nsmall=2)
+p3 <- format(phi3, digits=2, nsmall=2)
+p4 <- format(phi4, digits=2, nsmall=2)
+```
+> The estimated parameters are
+ $c = `r c`$,
+ $\phi_1 = `r p1`$,
+ $\phi_2 = `r p2`$,
+ $\phi_3 = `r p3`$, and
+ $\phi_4 = `r p4`$.
 
-$\hat{y}_{1970} = `r c` + `r p1` \times `r f1` + `r p2` \times 545 + `r p3` \times 552 + `r p4` \times 534 = `r f2`$
+Without using the `forecast` function, calculate forecasts for the next three years (1969--1971). (15 marks)
 
-$\hat{y}_{1971} = `r c` + `r p1` \times `r f2` + `r p2` \times `r f1` + `r p3` \times 545 + `r p4` \times 552 = `r format(intercept + phi1*f2 + phi2*f1 + phi3*545 + phi4*552, nsmall = 2)`$
+
+\begin{align*}
+\hat{y}_{T+1|T}
+  &= c + \phi_1 y_{T} + \phi_2 y_{T-1} + \phi_3 y_{T-2} + \phi_4 y_{T-3} \\
+  &= `r c` + `r p1` *545  `r p2` *552 + `r p3` *534  `r p4` *512 \\
+  &= `r format(f1 <- intercept + phi1*545 + phi2*552 + phi3*534 + phi4*512, nsmall=2)` \\
+\hat{y}_{T+2|T}
+  &= c + \phi_1 \hat{y}_{T+1|T} + \phi_2 y_{T} + \phi_3 y_{T-1} + \phi_4 y_{T-2} \\
+  &= `r c` + `r p1`* `r format(f1,nsmall=2)`  `r p2` *545 + `r p3` *552  `r p4`* 534 \\
+  &= `r format(f2 <- intercept + phi1*f1 + phi2*545 + phi3*552 + phi4*534, nsmall=2)` \\
+\hat{y}_{T+3|T}
+  &= c + \phi_1 \hat{y}_{T+2|T} + \phi_2 \hat{y}_{T+1|T} + \phi_3 y_{T} + \phi_4 y_{T-1} \\
+  &= `r c` + `r p1`* `r format(f2,nsmall=2)`  `r p2` * `r format(f1,nsmall=2)` + `r p3` *545  `r p4`* 552 \\
+  &= `r format(intercept + phi1*f2 + phi2*f1 + phi3*545 + phi4*552, nsmall=2)` \\
+\end{align*}
+
 
 e.  Comparing manual forecasts with R's `forecast` function:
 
@@ -630,6 +667,7 @@ Balancing trust in AI capabilities with critical evaluation of its
 suggestions 7. Communicating the reasoning behind AI-generated insights
 to stakeholders
 
+::: callout-important
 In this sample answer, I have provided a reflective essay that explores
 the experience of collaborating with Large Language Models in an
 analytics project. The essay discusses the benefits, such as efficient
@@ -647,3 +685,4 @@ This sample answer demonstrates a balanced and thoughtful approach to
 the question, providing insights into the transformative potential of
 collaborating with LLMs while also acknowledging the challenges and the
 need for responsible use and human expertise in the process.
+:::
