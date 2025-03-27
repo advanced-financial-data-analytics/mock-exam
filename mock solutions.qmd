@@ -14,6 +14,15 @@ library(knitr)
 library(forecast)
 ```
 
+## Assessment Guide
+
+This solutions document demonstrates the expected depth and quality of analysis for the Advanced Financial Data Analytics exam. When interpreting time series data:
+
+1. **Descriptive analysis** should identify key features (trend, seasonality, cycles) with specific references to time periods where patterns change.
+2. **Visual interpretations** should connect statistical features to business/economic context where appropriate.
+3. **Statistical discussions** should include both the technical meaning and practical implications of results.
+4. **Justifications** for modelling choices should reference both graphical evidence and theoretical principles.
+
 ## Question 1
 
 b.  Plotting the time series:
@@ -28,33 +37,57 @@ appropriate labels and titles.
 #| cache: true
 library(ggplot2)
 
+# Enhanced visualisation with proper formatting and consistent design elements
 autoplot(gold) +
   labs(title = "Daily Morning Gold Prices",
-       x = "Date", y = "Price (USD)") +
-  theme_minimal()
+       subtitle = "Strong upward trend with notable volatility",
+       x = "Date", 
+       y = "Price (USD)") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(color = "darkgrey"),
+    panel.grid.minor = element_blank()
+  ) +
+  # Adding annotation for outlier
+  annotate("text", x = which.max(gold), y = max(gold, na.rm=TRUE),
+           label = "Major outlier", vjust = -1, hjust = 1.1)
 
+# Similarly enhanced plots for woolyrnq and gas would follow the same pattern
 # autoplot(woolyrnq) +
 #   labs(title = "Quarterly Wool Production in Australia",
+#        subtitle = "Clear seasonal pattern with declining trend",
 #        x = "Date", y = "Production") +
-#   theme_minimal()
+#   theme_minimal() +
+#   theme(
+#     plot.title = element_text(face = "bold"),
+#     plot.subtitle = element_text(color = "darkgrey"),
+#     panel.grid.minor = element_blank()
+#   )
 # 
 # autoplot(gas) +
 #   labs(title = "Australian Monthly Gas Production",
+#        subtitle = "Increasing trend with seasonal variation",
 #        x = "Date", y = "Production") +
-#   theme_minimal()
+#   theme_minimal() +
+#   theme(
+#     plot.title = element_text(face = "bold"),
+#     plot.subtitle = element_text(color = "darkgrey"),
+#     panel.grid.minor = element_blank()
+#   )
 ```
 
 From the plots, we can make the following observations:
 
 -   The `gold` series shows an overall increasing trend with some
     fluctuations. There appears to be an outlier with an unusually high
-    price.
+    price. This outlier could correspond to a period of market volatility or a specific economic event that triggered a price spike.
 -   The `woolyrnq` series exhibits a clear seasonal pattern, with
     production peaking in certain quarters and declining in others.
-    There is also a slight overall downward trend.
+    There is also a slight overall downward trend, suggesting a gradual decline in the wool industry over this period.
 -   The `gas` series shows an increasing trend with some seasonal
     variation. The seasonality appears to be less pronounced compared to
-    the `woolyrnq` series.
+    the `woolyrnq` series, indicating more stable year-round demand with gradual production growth.
 
 b.  Frequency of each series:
 
@@ -69,11 +102,10 @@ frequency(woolyrnq)
 frequency(gas)
 ```
 
-The output reveals that: - The `gold` series has a frequency of 365,
-indicating daily data (assuming daily data for all trading days in a
-year). - The `woolyrnq` series has a frequency of 4, indicating
-quarterly data. - The `gas` series has a frequency of 12, indicating
-monthly data.
+The output reveals that: 
+- The `gold` series has a frequency of 1, indicating daily data observed on trading days. 
+- The `woolyrnq` series has a frequency of 4, indicating quarterly data, which aligns with the seasonal patterns observed in the time plot. 
+- The `gas` series has a frequency of 12, indicating monthly data, which explains the finer granularity of seasonal patterns compared to the wool series.
 
 c.  Checking for outliers:
 
@@ -96,11 +128,9 @@ boxplot(woolyrnq, main = "Wool")
 boxplot(gas, main = "Gas")
 ```
 
-From the histograms and boxplots, we can observe that: - The `gold`
-series has an extreme outlier on the higher end, which is consistent
-with our observation from the time series plot. - The `woolyrnq` and
-`gas` series do not show any clear outliers based on these visual
-methods.
+From the histograms and boxplots, we can observe that: 
+- The `gold` series has an extreme outlier on the higher end, which is consistent with our observation from the time series plot. This outlier significantly exceeds the upper whisker of the boxplot, indicating a value that deviates substantially from the general distribution.
+- The `woolyrnq` and `gas` series do not show any clear outliers based on these visual methods, suggesting more consistent patterns in production volumes over time.
 
 To identify the specific outlier in the `gold` series, we can use the
 `which.max()` function to find the index of the maximum value and then
@@ -144,6 +174,26 @@ practice to use multiple outlier detection techniques and consider the
 domain knowledge and context of the data to make robust conclusions
 about the presence of outliers.
 
+### Assessment Guidance - Question 1 ###
+
+**Excellent answers (70%+) will:**
+- Produce professionally formatted visualizations with appropriate annotations
+- Clearly identify and quantify outliers using multiple methods
+- Provide contextual interpretation of the frequency results
+- Offer thoughtful discussion about the implications of outliers for further analysis
+
+**Good answers (60-69%) will:**
+- Create correct visualizations with proper labels
+- Identify outliers using at least one statistical method
+- Correctly interpret the frequency results
+- Discuss basic implications of outliers
+
+**Satisfactory answers (50-59%) will:**
+- Produce basic but correct visualizations
+- Identify obvious outliers visually
+- State the frequency of each series
+- Provide minimal interpretation of results
+
 ## Question 2
 
 To explore the features of the given time series (`hsales`, `usdeaths`,
@@ -155,106 +205,231 @@ graphics functions in R. Let's analyse each series individually.
 ```{r}
 #| echo: true
 #| cache: true
-autoplot(hsales) + labs(title = "Monthly Sales of New One-Family Houses, USA, 1973-1995")
-ggseasonplot(hsales, year.labels = TRUE, year.labels.left = TRUE)
-ggsubseriesplot(hsales)
-gglagplot(hsales)
-ggAcf(hsales)
+autoplot(hsales) + 
+  labs(title = "Monthly Sales of New One-Family Houses, USA, 1973-1995",
+       subtitle = "Revealing seasonal patterns and economic cycles",
+       x = "Date", 
+       y = "Sales Volume") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(color = "darkgrey"),
+    panel.grid.minor = element_blank()
+  )
+
+ggseasonplot(hsales, year.labels = TRUE, year.labels.left = TRUE) +
+  labs(title = "Seasonal Plot: Housing Sales",
+       subtitle = "Strong seasonal patterns consistent across years",
+       y = "Sales Volume") +
+  theme_minimal()
+
+ggsubseriesplot(hsales) +
+  labs(title = "Seasonal Subseries Plot: Housing Sales",
+       subtitle = "Monthly patterns showing peak selling seasons",
+       y = "Sales Volume") +
+  theme_minimal()
+
+gglagplot(hsales) +
+  labs(title = "Lag Plot: Housing Sales",
+       subtitle = "Showing autocorrelation structure") +
+  theme_minimal()
+
+ggAcf(hsales) +
+  labs(title = "Autocorrelation Function: Housing Sales",
+       subtitle = "Confirming 12-month seasonal pattern") +
+  theme_minimal()
 ```
 
 -   The time plot shows a clear seasonal pattern and some long-term
-    fluctuations.
--   The seasonal plot confirms a strong and consistent seasonal pattern.
+    fluctuations. These fluctuations likely correspond to economic cycles in the US housing market, with visible dips during recessionary periods.
+-   The seasonal plot confirms a strong and consistent seasonal pattern, with sales typically peaking in spring and summer months (March-August) and dropping in winter.
 -   The subseries plot shows that the seasonal pattern is similar across
-    years.
+    years, indicating stability in the housing market's seasonal dynamics despite economic changes.
 -   The lag plot indicates a positive relationship between consecutive
-    observations, possibly due to trend or seasonal effects.
+    observations, possibly due to trend or seasonal effects. This suggests momentum in the housing market, where strong sales months tend to be followed by relatively strong months.
 -   The ACF plot shows significant autocorrelations at multiples of lag
-    12, confirming the presence of seasonality.
+    12, confirming the presence of annual seasonality that real estate analysts would expect.
 
 2.  `usdeaths` (Monthly accidental deaths in the USA, 1973–1978):
 
 ```{r}
 #| echo: true
 #| cache: true
-autoplot(usdeaths) + labs(title = "Monthly Accidental Deaths in the USA, 1973-1978")
-ggseasonplot(usdeaths, year.labels = TRUE, year.labels.left = TRUE)
-ggsubseriesplot(usdeaths)
-gglagplot(usdeaths)
-ggAcf(usdeaths)
+autoplot(usdeaths) + 
+  labs(title = "Monthly Accidental Deaths in the USA, 1973-1978",
+       subtitle = "Revealing consistent seasonal mortality patterns",
+       x = "Date", 
+       y = "Number of Deaths") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(color = "darkgrey"),
+    panel.grid.minor = element_blank()
+  )
+
+ggseasonplot(usdeaths, year.labels = TRUE, year.labels.left = TRUE) +
+  labs(title = "Seasonal Plot: Accidental Deaths",
+       subtitle = "Higher mortality in summer months across all years",
+       y = "Number of Deaths") +
+  theme_minimal()
+
+ggsubseriesplot(usdeaths) +
+  labs(title = "Seasonal Subseries Plot: Accidental Deaths",
+       subtitle = "Monthly patterns showing seasonal risk factors",
+       y = "Number of Deaths") +
+  theme_minimal()
+
+gglagplot(usdeaths) +
+  labs(title = "Lag Plot: Accidental Deaths",
+       subtitle = "Showing strong month-to-month relationship") +
+  theme_minimal()
+
+ggAcf(usdeaths) +
+  labs(title = "Autocorrelation Function: Accidental Deaths",
+       subtitle = "Confirming annual seasonal cycle") +
+  theme_minimal()
 ```
 
--   The time plot shows a clear seasonal pattern but no obvious trend.
+-   The time plot shows a clear seasonal pattern but no obvious trend. This suggests that the overall mortality risk remained relatively stable during this period, though with pronounced seasonal variation.
 -   The seasonal plot confirms the presence of seasonality, with higher
-    deaths in summer months.
+    deaths in summer months (particularly July-August). This seasonal peak may be associated with increased outdoor activities, travel, and water-related accidents during summer.
 -   The subseries plot shows that the seasonal pattern is consistent
-    across years.
+    across years, indicating stable seasonal risk factors throughout the observation period.
 -   The lag plot shows a positive relationship between consecutive
-    observations due to seasonality.
+    observations due to seasonality, with a clear clustering pattern revealing the seasonal grouping.
 -   The ACF plot has significant autocorrelations at multiples of lag
-    12, confirming seasonality.
+    12, confirming the annual seasonality pattern that public health officials would monitor.
 
 3.  `bricksq` (Quarterly clay brick production, Australia, 1956–1995):
 
 ```{r}
 #| echo: true
 #| cache: true
-autoplot(bricksq) + labs(title = "Quarterly Clay Brick Production, Australia, 1956-1995")
-ggseasonplot(bricksq, year.labels = TRUE, year.labels.left = TRUE)
-ggsubseriesplot(bricksq)
-gglagplot(bricksq)
-ggAcf(bricksq)
+autoplot(bricksq) + 
+  labs(title = "Quarterly Clay Brick Production, Australia, 1956-1995",
+       subtitle = "Long-term growth with seasonal production cycles",
+       x = "Date", 
+       y = "Production Volume") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(color = "darkgrey"),
+    panel.grid.minor = element_blank()
+  )
+
+ggseasonplot(bricksq, year.labels = TRUE, year.labels.left = TRUE) +
+  labs(title = "Seasonal Plot: Brick Production",
+       subtitle = "Quarterly production patterns showing construction seasonality",
+       y = "Production Volume") +
+  theme_minimal()
+
+ggsubseriesplot(bricksq) +
+  labs(title = "Seasonal Subseries Plot: Brick Production",
+       subtitle = "Quarterly patterns with Q3 consistently highest",
+       y = "Production Volume") +
+  theme_minimal()
+
+gglagplot(bricksq) +
+  labs(title = "Lag Plot: Brick Production",
+       subtitle = "Showing quarterly relationships and trend influence") +
+  theme_minimal()
+
+ggAcf(bricksq) +
+  labs(title = "Autocorrelation Function: Brick Production",
+       subtitle = "Showing trend and seasonal components") +
+  theme_minimal()
 ```
 
 -   The time plot shows a strong increasing trend and some seasonal
-    fluctuations.
+    fluctuations. The trend reflects Australia's growing construction industry over four decades, with visible periods of acceleration in the 1960s and 1970s, followed by more volatility in the 1980s and 1990s.
 -   The seasonal plot suggests the presence of seasonality, with
-    production peaking in Q3 and bottoming in Q1.
+    production peaking in Q3 and bottoming in Q1. This pattern likely reflects construction industry seasonality, with higher production during favorable weather conditions.
 -   The subseries plot confirms that the seasonal pattern is generally
-    consistent across years.
+    consistent across years, though the magnitude of seasonal fluctuations appears to increase with the overall production level.
 -   The lag plot shows a strong positive relationship between
-    consecutive observations, mainly due to the trend.
+    consecutive observations, mainly due to the trend. The distinct clusters visible in the lag plot demonstrate the combined effects of trend and seasonality.
 -   The ACF plot has significant autocorrelations that decrease slowly,
     indicating a trend. There are also spikes at multiples of lag 4,
-    suggesting seasonality.
+    suggesting quarterly seasonality typical of construction-related industries.
 
 4.  `sunspotarea` (Annual mean sunspot area, 1875–2015):
 
 ```{r}
 #| echo: true
 #| cache: true
-autoplot(sunspotarea) + labs(title = "Annual Mean Sunspot Area, 1875-2015")
-gglagplot(sunspotarea)
-ggAcf(sunspotarea)
+autoplot(sunspotarea) + 
+  labs(title = "Annual Mean Sunspot Area, 1875-2015",
+       subtitle = "Revealing the approximately 11-year solar cycle",
+       x = "Date", 
+       y = "Sunspot Area") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(color = "darkgrey"),
+    panel.grid.minor = element_blank()
+  )
+
+gglagplot(sunspotarea) +
+  labs(title = "Lag Plot: Sunspot Area",
+       subtitle = "Revealing the cyclical pattern of solar activity") +
+  theme_minimal()
+
+ggAcf(sunspotarea) +
+  labs(title = "Autocorrelation Function: Sunspot Area",
+       subtitle = "Sinusoidal pattern confirming cyclical behavior") +
+  theme_minimal()
 ```
 
 -   The time plot shows a clear cyclical pattern with a period of around
-    11 years.
+    11 years. This corresponds to the well-documented solar cycle, with particularly intense peaks visible around 1960 and 1980, and varying cycle amplitudes throughout the time series.
 -   The lag plot exhibits a spiral pattern, confirming the presence of
-    cycles.
+    cycles. This distinctive pattern is characteristic of natural cyclical phenomena and demonstrates how sunspot activity in one year relates to activity in subsequent years as part of the solar cycle.
 -   The ACF plot has a sinusoidal pattern, alternating between positive
     and negative autocorrelations, which is characteristic of cyclical
-    behavior.
+    behavior. The period of this sinusoidal pattern in the ACF confirms the approximately 11-year cycle identified in the time plot.
 
 5.  `gasoline` (US finished motor gasoline product, monthly, 1991–2016):
 
 ```{r}
 #| echo: true
 #| cache: true
-autoplot(gasoline) + labs(title = "US Finished Motor Gasoline Product, Monthly, 1991-2016")
-ggseasonplot(gasoline, year.labels = TRUE, year.labels.left = TRUE)
-gglagplot(gasoline)
-ggAcf(gasoline)
+autoplot(gasoline) + 
+  labs(title = "US Finished Motor Gasoline Product, Monthly, 1991-2016",
+       subtitle = "Long-term growth with strong seasonal demand patterns",
+       x = "Date", 
+       y = "Production Volume") +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold"),
+    plot.subtitle = element_text(color = "darkgrey"),
+    panel.grid.minor = element_blank()
+  )
+
+ggseasonplot(gasoline, year.labels = TRUE, year.labels.left = TRUE) +
+  labs(title = "Seasonal Plot: Gasoline Production",
+       subtitle = "Consistently higher production in summer driving months",
+       y = "Production Volume") +
+  theme_minimal()
+
+gglagplot(gasoline) +
+  labs(title = "Lag Plot: Gasoline Production",
+       subtitle = "Showing monthly relationships influenced by seasonality") +
+  theme_minimal()
+
+ggAcf(gasoline) +
+  labs(title = "Autocorrelation Function: Gasoline Production",
+       subtitle = "Confirming seasonal pattern and trend component") +
+  theme_minimal()
 ```
 
--   The time plot shows an increasing trend and strong seasonality.
+-   The time plot shows an increasing trend and strong seasonality. The trend reflects growing US gasoline consumption over this 25-year period, with notable plateaus and changes in growth rate around economic events like the 2008 financial crisis.
 -   The seasonal plot confirms the presence of seasonality, with peaks
-    in summer and troughs in winter.
+    in summer and troughs in winter. This pattern corresponds to the "summer driving season" when American consumers typically drive more for vacations and leisure activities.
 -   The lag plot is not very informative due to the strong seasonality
-    and trend.
+    and trend, though the positive correlation between adjacent observations is clearly visible.
 -   The ACF plot has significant autocorrelations that decrease slowly,
     indicating a trend. The seasonal spikes are also evident, confirming
-    seasonality.
+    seasonality with a 12-month cycle typical of energy consumption patterns.
 
 In summary, the analysis of these time series reveals the following
 features:
@@ -267,7 +442,26 @@ features:
 
 The appropriate time series graphics functions help in identifying and
 confirming the presence of trend, seasonality, and cyclical behavior in
-the given time series.
+the given time series. These patterns have important implications for forecasting and modeling approaches, as different components require different handling methods.
+
+### Assessment Guidance - Question 2 ###
+
+**Excellent answers (70%+) will:**
+- Produce comprehensive visualizations for each time series with meaningful annotations
+- Identify and distinguish between trend, seasonal, and cyclical patterns with precision
+- Connect observed patterns to potential real-world economic or physical phenomena
+- Make insightful observations about implications for time series modeling approaches
+
+**Good answers (60-69%) will:**
+- Create appropriate visualizations for each time series
+- Correctly identify the main patterns in each series
+- Provide reasonable interpretations of the observed patterns
+- Draw basic conclusions about appropriate modeling approaches
+
+**Satisfactory answers (50-59%) will:**
+- Produce basic visualizations for each series
+- Identify obvious patterns like strong seasonality or trends
+- Provide minimal interpretation of the observed patterns
 
 ## Question 3
 
@@ -286,14 +480,16 @@ transformation with λ = 0.25 to stabilize the variance.
 #| cache: true
 y <- BoxCox(bricksq, lambda = 0.25)
 fit <- stl(y, s.window = "periodic")
-autoplot(fit)
+autoplot(fit) +
+  labs(title = "STL Decomposition of Clay Brick Production",
+       subtitle = "Using Box-Cox transformation (λ=0.25) to stabilize variance") +
+  theme_minimal()
 ```
 
-The STL decomposition reveals the following: - The data exhibits a
-strong increasing trend over time. - The seasonal component is
-relatively stable, with peaks in Q3 and troughs in Q1. - The remainder
-component shows some fluctuations, particularly during the 1970s and
-early 1980s.
+The STL decomposition reveals the following: 
+- The data exhibits a strong increasing trend over time, with periods of accelerated growth (especially in the 1960s and early 1970s) followed by periods of relative stability or slower growth. 
+- The seasonal component is relatively stable, with peaks in Q3 and troughs in Q1. This pattern likely reflects construction industry cycles that follow weather patterns in Australia.
+- The remainder component shows some fluctuations, particularly during the 1970s and early 1980s, suggesting periods of higher volatility that may correspond to economic shocks or policy changes affecting the construction sector.
 
 As the seasonality appears to be stable over time, we used a periodic
 seasonal window (`s.window = "periodic"`).
@@ -308,12 +504,16 @@ To compute and plot the seasonally adjusted data, we can use the
 #| cache: true
 autoplot(bricksq, series = "Data") +
   autolayer(seasadj(fit), series = "Seasonally Adjusted") +
-  xlab("Year") + ylab("Bricks (millions)") +
-  ggtitle("Quarterly Clay Brick Production, Australia")
+  labs(title = "Original vs. Seasonally Adjusted Brick Production",
+       subtitle = "Removing seasonal effects reveals the underlying trend and cycles",
+       x = "Year", 
+       y = "Bricks (millions)") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
 ```
 
 The seasonally adjusted data removes the seasonal component from the
-original data, making the trend more apparent.
+original data, making the trend more apparent. This adjustment reveals more clearly the long-term growth pattern and business cycle fluctuations that might be partially obscured by seasonal variation in the original series.
 
 c.  Naive forecasts on seasonally adjusted data:
 
@@ -327,12 +527,16 @@ observed value.
 fit_naive <- naive(seasadj(fit))
 autoplot(fit_naive, series = "Naive Forecast") +
   autolayer(seasadj(fit), series = "Seasonally Adjusted") +
-  xlab("Year") + ylab("Bricks (millions)") +
-  ggtitle("Naive Forecast of Seasonally Adjusted Data")
+  labs(title = "Naive Forecast of Seasonally Adjusted Data",
+       subtitle = "Simple approach that extends the last observed value",
+       x = "Year", 
+       y = "Bricks (millions)") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
 ```
 
 The naive method simply extends the last observed value of the
-seasonally adjusted data as the forecast.
+seasonally adjusted data as the forecast. This approach assumes no further change in the underlying trend or business cycle components, which may be reasonable for very short-term forecasts but becomes increasingly questionable as the forecast horizon extends.
 
 d.  Reseasonalize the results:
 
@@ -345,13 +549,54 @@ with a chosen forecasting method.
 #| cache: true
 fc <- stlf(bricksq, s.window = "periodic", method = "naive", lambda = 0.25)
 autoplot(fc) +
-  xlab("Year") + ylab("Bricks (millions)") +
-  ggtitle("Reseasonalized Forecasts using STL Decomposition and Naive Method")
+  labs(title = "Reseasonalized Forecasts using STL Decomposition",
+       subtitle = "Forecasts incorporate both the predicted trend and seasonal patterns",
+       x = "Year", 
+       y = "Bricks (millions)") +
+  theme_minimal()
 ```
 
 The `stlf()` function adds the seasonal component back to the forecasted
 trend and remainder components to obtain the final forecasts for the
-original data.
+original data. The resulting forecasts show the expected seasonal pattern superimposed on the flat trend predicted by the naive method, creating a more realistic forecast that captures the known seasonal variation in brick production.
+
+## ALTERNATIVE APPROACHES:
+
+```{r}
+#| echo: true
+#| cache: true
+# 1. Using ETS instead of naive method
+fc_ets <- stlf(bricksq, s.window = "periodic", method = "ets", lambda = 0.25)
+
+# 2. Direct ARIMA modelling that handles seasonality internally
+fc_arima <- auto.arima(bricksq, lambda = 0.25, seasonal = TRUE)
+
+# Combined plot of different forecasting approaches
+autoplot(bricksq) +
+  autolayer(fc, series = "STL + Naive", PI = FALSE) +
+  autolayer(fc_ets, series = "STL + ETS", PI = FALSE) +
+  autolayer(forecast(fc_arima), series = "ARIMA", PI = FALSE) +
+  labs(title = "Comparison of Different Forecasting Approaches",
+       subtitle = "Showing how different methods handle trend and seasonality",
+       x = "Year", 
+       y = "Bricks (millions)") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+
+# Comparing forecast performance
+accuracy_comparison <- rbind(
+  STL_NAIVE = accuracy(fc)[1,c("RMSE", "MAE", "MAPE", "MASE")],
+  STL_ETS = accuracy(fc_ets)[1,c("RMSE", "MAE", "MAPE", "MASE")],
+  ARIMA = accuracy(forecast(fc_arima))[1,c("RMSE", "MAE", "MAPE", "MASE")]
+)
+kable(accuracy_comparison, 
+      caption = "Comparison of different forecasting approaches on training data")
+```
+
+Different approaches may be preferred depending on specific criteria:
+- STL+Naive: Simple, interpretable, works well with strong seasonality
+- STL+ETS: Captures changing patterns, better for evolving seasonal patterns
+- ARIMA: More sophisticated for complex autocorrelation structures
 
 e.  Residual diagnostics:
 
@@ -364,15 +609,13 @@ To check if the residuals are uncorrelated, we can use the
 checkresiduals(fc)
 ```
 
-The residual diagnostics show that: - The standardised residuals appear
-to be approximately normally distributed. - The ACF plot of the
-residuals shows a significant spike at lag 1, indicating some remaining
-autocorrelation. - The p-values for the Ljung-Box test are below 0.05
-for most lags, suggesting that the residuals are not entirely
-uncorrelated.
+The residual diagnostics show that: 
+- The standardised residuals appear to be approximately normally distributed, suggesting that the model captures the systematic patterns reasonably well.
+- The ACF plot of the residuals shows a significant spike at lag 1, indicating some remaining autocorrelation that the model hasn't captured. This suggests that there might be some short-term dependencies that could be modeled to improve forecast accuracy.
+- The p-values for the Ljung-Box test are below 0.05 for most lags, suggesting that the residuals are not entirely uncorrelated. This statistical evidence indicates that the model could potentially be improved by incorporating additional information or using a different approach.
 
 While the residuals are not perfect, they are reasonably close to being
-uncorrelated.
+uncorrelated. The remaining autocorrelation at lag 1 suggests that the naive method might be overlooking some short-term dependencies in the data.
 
 f.  Robust STL decomposition:
 
@@ -384,8 +627,11 @@ less sensitive to outliers.
 #| cache: true
 fc_robust <- stlf(bricksq, s.window = "periodic", method = "naive", lambda = 0.25, robust = TRUE)
 autoplot(fc_robust) +
-  xlab("Year") + ylab("Bricks (millions)") +
-  ggtitle("Reseasonalized Forecasts using Robust STL Decomposition and Naive Method")
+  labs(title = "Reseasonalized Forecasts using Robust STL Decomposition",
+       subtitle = "Using robust methods to reduce sensitivity to outliers",
+       x = "Year", 
+       y = "Bricks (millions)") +
+  theme_minimal()
 
 checkresiduals(fc_robust)
 ```
@@ -393,7 +639,7 @@ checkresiduals(fc_robust)
 In this case, the robust STL decomposition does not make a significant
 difference, as there are no extreme outliers near the end of the series.
 The residual diagnostics are similar to those from the non-robust
-decomposition.
+decomposition, suggesting that outliers are not a major concern for this dataset.
 
 g.  Comparison of `stlf` and `snaive` forecasts:
 
@@ -407,8 +653,25 @@ bricks1 <- window(bricksq, end = c(1987, 4))
 fc1 <- stlf(bricks1, s.window = "periodic", method = "naive", lambda = 0.25)
 fc2 <- snaive(bricks1)
 
-accuracy(fc1, bricksq)
-accuracy(fc2, bricksq)
+# Visual comparison of forecasts against actuals
+autoplot(bricksq) +
+  autolayer(fc1, series = "STL + Naive", PI = FALSE) +
+  autolayer(fc2, series = "Seasonal Naive", PI = FALSE) +
+  labs(title = "Comparison of Forecasting Methods",
+       subtitle = "Test period: 1988-1989",
+       x = "Year", 
+       y = "Bricks (millions)") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  geom_vline(xintercept = 1988, linetype = "dashed", color = "red") +
+  annotate("text", x = 1988, y = max(bricksq), label = "Test period begins", 
+           hjust = -0.1, vjust = 1, color = "red")
+
+accuracy_table <- rbind(
+  `STL + Naive` = accuracy(fc1, bricksq)[2, c("RMSE", "MAE", "MAPE", "MASE")],
+  `Seasonal Naive` = accuracy(fc2, bricksq)[2, c("RMSE", "MAE", "MAPE", "MASE")]
+)
+kable(accuracy_table, caption = "Forecast Accuracy on Test Set (1988-1989)")
 ```
 
 The accuracy measures (RMSE, MAE, MAPE, and MASE) indicate that the
@@ -432,6 +695,28 @@ seasonality in the data, and the comparison of different forecasting
 methods provides insight into their relative performance on a small test
 set.
 
+### Assessment Guidance - Question 3 ###
+
+**Excellent answers (70%+) will:**
+- Correctly implement and interpret STL decomposition with appropriate transformation
+- Provide thorough interpretation of trend, seasonal, and remainder components
+- Successfully implement and compare multiple forecasting approaches
+- Critically evaluate forecast performance with appropriate metrics
+- Make justified recommendations about the most suitable forecasting method
+
+**Good answers (60-69%) will:**
+- Implement STL decomposition correctly
+- Provide basic interpretations of decomposition components
+- Compare at least two forecasting methods using appropriate metrics
+- Demonstrate understanding of the advantages and limitations of different approaches
+
+**Satisfactory answers (50-59%) will:**
+- Implement STL decomposition with at most minor errors
+- Provide limited interpretation of results
+- Show basic understanding of forecasting comparison
+- Make simple observations about forecast performance
+
+
 ## Question 4
 
 In this question, we will analyse the annual bituminous coal production
@@ -448,12 +733,28 @@ identify any apparent patterns or trends.
 #| cache: true
 autoplot(bicoal) +
   xlab("Year") + ylab("Millions of tons") +
-  ggtitle("Annual Bituminous Coal Production in the United States, 1920-1968")
+  ggtitle("Annual Bituminous Coal Production in the United States, 1920-1968") +
+  theme_minimal() +
+  labs(subtitle = "Revealing long-term trends and cyclical patterns in energy production") +
+  annotate("rect", xmin = 1929, xmax = 1939, ymin = 250, ymax = 600, 
+           alpha = 0.2, fill = "gray") +
+  annotate("text", x = 1934, y = 610, label = "Great Depression", size = 3) +
+  annotate("rect", xmin = 1941, xmax = 1945, ymin = 250, ymax = 600, 
+           alpha = 0.2, fill = "lightblue") +
+  annotate("text", x = 1943, y = 610, label = "World War II", size = 3)
 ```
 
-The plot shows an overall increasing trend in the bituminous coal
-production over the given period. There are some fluctuations around the
-trend, but no clear seasonality or cyclicity is evident.
+The plot shows fluctuations in bituminous coal production over the given period. We observe:
+
+- A decline during the Great Depression (1929-1939)
+- A significant rise during World War II (1941-1945)
+- Fluctuations in the post-war period
+- A general upward trend in the 1960s
+
+While there are clear fluctuations around the long-term pattern, there is no obvious seasonality or consistent cyclicity evident in this annual data series.
+
+## THEORETICAL NOTE:
+The absence of seasonality in annual data is expected. For commodities like coal, seasonality would typically appear in monthly or quarterly data, reflecting factors like heating demand or industrial production cycles. The annual aggregation smooths out these shorter-term patterns, leaving only the longer-term trend and cyclical components.
 
 b.  Identifying the ARIMA model:
 
@@ -461,12 +762,21 @@ The given model is an ARIMA(4,0,0) model, which can be written as:
 
 $y_t = c + \phi_1 y_{t-1} + \phi_2 y_{t-2} + \phi_3 y_{t-3} + \phi_4 y_{t-4} + e_t$
 
-where: - $y_t$ is the coal production in year $t$ - $c$ is a constant
-term - $\phi_1, \phi_2, \phi_3, \phi_4$ are the autoregressive
-coefficients - $e_t$ is a white noise series
+where: 
+- $y_t$ is the coal production in year $t$ 
+- $c$ is a constant term 
+- $\phi_1, \phi_2, \phi_3, \phi_4$ are the autoregressive coefficients 
+- $e_t$ is a white noise series
 
-In this model: - $p = 4$ (autoregressive order) - $d = 0$ (no
-differencing) - $q = 0$ (no moving average term)
+In this model: 
+- $p = 4$ (autoregressive order): The current value depends on the previous four values
+- $d = 0$ (no differencing): The series is modeled in its original form without differencing
+- $q = 0$ (no moving average term): There is no dependency on previous random shocks
+
+This can be expressed in backshift notation as:
+$(1 - \phi_1B - \phi_2B^2 - \phi_3B^3 - \phi_4B^4)y_t = c + e_t$
+
+where $B$ is the backshift operator such that $By_t = y_{t-1}$.
 
 c.  Justifying the model choice using ACF and PACF:
 
@@ -476,13 +786,17 @@ and PACF plots of the `bicoal` time series.
 ```{r}
 #| echo: true
 #| cache: true
-ggtsdisplay(bicoal)
+ggtsdisplay(bicoal) +
+  labs(title = "ACF and PACF of Bituminous Coal Production",
+       subtitle = "Showing patterns that suggest an AR(4) specification")
 ```
 
 The ACF plot shows a slow decay in the autocorrelations, which is
-characteristic of an autoregressive process. The PACF plot has a
-significant spike at lag 4, but no significant spikes at higher lags.
-This suggests that an AR(4) model might be appropriate for the data.
+characteristic of an autoregressive process. The slow decay suggests that current values are influenced by values from previous time periods, consistent with the economic principle that production capacity and demand patterns evolve gradually over time.
+
+The PACF plot has a significant spike at lag 4, but no significant spikes at higher lags. This pattern is indicative of an AR(4) process - after accounting for the first four lags, there is no additional predictive information in earlier observations. In economic terms, this suggests that coal production in a given year is directly influenced by production in the previous four years, possibly reflecting planning cycles, infrastructure development timelines, or long-term market adjustment mechanisms.
+
+The lack of significant spikes in the PACF beyond lag 4 supports the choice of p=4 for the autoregressive component. The absence of a need for differencing (d=0) is supported by the fact that the series appears to fluctuate around a relatively stable mean without showing strong non-stationarity. Finally, the absence of a clear pattern in the ACF that would suggest moving average components supports the decision to set q=0.
 
 d.  Forecasting the next three years:
 
@@ -535,6 +849,7 @@ Without using the `forecast` function, calculate forecasts for the next three ye
   &= `r format(intercept + phi1*f2 + phi2*f1 + phi3*545 + phi4*552, nsmall=2)` \\
 \end{align*}
 
+These calculations demonstrate how multi-step forecasting works in an AR model. For each additional step, we replace the unknown future values with their forecasts, creating a recursive process. This reflects how uncertainty increases with forecast horizon, as each step compounds any forecast errors from previous steps.
 
 e.  Comparing manual forecasts with R's `forecast` function:
 
@@ -547,6 +862,14 @@ using the `forecast` function.
 fit <- Arima(bicoal, order = c(4, 0, 0))
 fc <- forecast(fit, h = 3)
 fc
+
+# Visualizing the forecasts
+autoplot(fc) +
+  labs(title = "ARIMA(4,0,0) Forecasts for Bituminous Coal Production",
+       subtitle = "Showing point forecasts and prediction intervals",
+       x = "Year",
+       y = "Millions of tons") +
+  theme_minimal()
 ```
 
 The forecasts obtained from the `forecast` function are very close to
@@ -556,17 +879,31 @@ to rounding errors in the manual calculations.
 The `forecast` function uses the maximum likelihood estimates of the
 model parameters and computes the forecasts based on these estimates. It
 also provides additional information, such as the standard errors of the
-forecasts and the confidence intervals.
+forecasts and the confidence intervals, which are crucial for understanding the uncertainty around point forecasts.
 
-In summary, this question demonstrates the process of fitting an
-ARIMA(4,0,0) model to the `bicoal` time series. The model choice is
-justified using the ACF and PACF plots, which suggest the presence of an
-autoregressive process of order 4. The forecasts for the next three
-years are calculated manually using the estimated model parameters and
-compared with the results obtained from the `forecast` function in R.
-The analysis highlights the importance of understanding the underlying
-model structure and the ability to interpret the results in the context
-of the given problem.
+The prediction intervals widen as the forecast horizon increases, reflecting growing uncertainty about future values. This is particularly important for decision-makers who need to consider not just the expected value but also the range of possible outcomes when planning production, investment, or policy responses.
+
+### Assessment Guidance - Question 4 ###
+
+**Excellent answers (70%+) will:**
+- Correctly identify the ARIMA model components and explain their meaning
+- Thoroughly justify the model choice using ACF and PACF patterns
+- Accurately calculate multi-step forecasts with clear mathematical explanation
+- Provide thoughtful interpretation of the forecasts in business/economic context
+- Compare manual calculations with R output and explain any differences
+
+**Good answers (60-69%) will:**
+- Correctly identify the ARIMA model structure
+- Provide reasonable justification for model choice using ACF/PACF
+- Calculate forecasts with minor errors
+- Offer basic interpretation of forecast results
+- Successfully compare with R function output
+
+**Satisfactory answers (50-59%) will:**
+- Identify the basic structure of the ARIMA model
+- Show understanding of ACF/PACF interpretation
+- Attempt forecast calculations with conceptual understanding
+- Provide minimal interpretation of results
 
 ## Question 5
 
@@ -646,43 +983,100 @@ navigate this exciting frontier, it is essential to develop robust
 ethical frameworks and maintain human oversight to ensure the
 responsible and beneficial use of these powerful AI tools.
 
-Benefits and Limitations of Collaborating with Large Language Models
+## Benefits and Limitations of Collaborating with Large Language Models
 
-Benefits: 1. Efficient processing and analysis of large textual datasets
-2. Automated identification of key themes, sentiment patterns, and
-actionable insights 3. Engaging in meaningful dialogue and generating
-human-like responses 4. Assisting with tasks such as text summarization,
-content generation, and code assistance 5. Fostering creativity and
-considering diverse perspectives 6. Enhancing efficiency by providing
-excellent starting points for iteration and improvement 7. Combining
-human expertise with machine intelligence for powerful problem-solving
+### Benefits
+1. **Efficient data processing**: LLMs can analyze vast amounts of textual data quickly, identifying patterns that would take humans significantly longer to discover.
+   
+2. **Enhanced pattern recognition**: These models can identify subtle themes and connections across large datasets that might be missed in manual analysis.
+   
+3. **Creativity augmentation**: LLMs can generate alternative perspectives and approaches, expanding the analyst's thinking beyond conventional frameworks.
+   
+4. **Code generation assistance**: For data analysts, LLMs can suggest code implementations, debug existing code, and recommend optimization strategies.
+   
+5. **Documentation acceleration**: Models can draft data dictionaries, methodology explanations, and other technical documentation, freeing analysts for higher-value work.
+   
+6. **Knowledge access**: LLMs provide access to broad knowledge bases that can inform analytical approaches and contextual understanding.
+   
+7. **Iteration efficiency**: They enable rapid prototyping of analyses and reports, allowing for faster refinement cycles.
 
-Limitations: 1. Potential for biased or misleading outputs due to biases
-in training data 2. Lack of domain-specific knowledge and context in
-highly specialized or niche topics 3. Need for human oversight and
-critical evaluation of AI-generated content 4. Challenges in
-interpretability and explainability of LLM outputs 5. Requirement for a
-strong ethical framework and responsible use of AI technologies 6.
-Balancing trust in AI capabilities with critical evaluation of its
-suggestions 7. Communicating the reasoning behind AI-generated insights
-to stakeholders
+### Limitations
+1. **Statistical reliability concerns**: LLMs may suggest analyses that appear sophisticated but are statistically flawed or inappropriate for the data structure.
+   
+2. **Domain knowledge gaps**: These models lack specialized expertise in many fields, potentially missing critical domain-specific considerations.
+   
+3. **Methodological transparency issues**: The basis for LLM suggestions is often opaque, making it difficult to validate methodological soundness.
+   
+4. **Data recency limitations**: LLMs typically lack information about recent developments or cutting-edge methodologies in rapidly evolving fields.
+   
+5. **Deceptive confidence**: Models present information with uniform confidence regardless of the certainty or uncertainty behind their outputs.
+   
+6. **Reproducibility challenges**: The interactive nature of LLM collaboration can make analytical processes difficult to document and reproduce.
+   
+7. **Overreliance risk**: Analysts may develop dependence on LLM assistance, potentially atrophying their core analytical skills over time.
 
-::: callout-important
-In this sample answer, I have provided a reflective essay that explores
-the experience of collaborating with Large Language Models in an
-analytics project. The essay discusses the benefits, such as efficient
-data processing, creative problem-solving, and enhanced productivity. It
-also acknowledges the limitations, including potential biases, lack of
-domain-specific knowledge, and challenges in interpretability and
-explainability.
+### Assessment Guidance - Question 5 ###
 
-The answer then summarizes the key benefits and limitations in a concise
-list format, highlighting the importance of human oversight, critical
-evaluation, and ethical considerations when working with AI
-technologies.
+**Excellent answers (70%+) will:**
+- Demonstrate critical reflection on both benefits and limitations of LLM collaboration
+- Provide specific, concrete examples from personal or hypothetical analytics workflows
+- Consider ethical dimensions and professional responsibilities
+- Evaluate implications for the analytics profession and skill development
+- Present a balanced, nuanced perspective that acknowledges complexity
 
-This sample answer demonstrates a balanced and thoughtful approach to
-the question, providing insights into the transformative potential of
-collaborating with LLMs while also acknowledging the challenges and the
-need for responsible use and human expertise in the process.
-:::
+**Good answers (60-69%) will:**
+- Identify several key benefits and limitations
+- Provide some specific examples of LLM applications in analytics
+- Consider basic ethical concerns
+- Show awareness of professional implications
+- Present a relatively balanced view
+
+**Satisfactory answers (50-59%) will:**
+- List some benefits and limitations
+- Provide general descriptions without specific examples
+- Show limited consideration of ethical dimensions
+- Offer basic reflections on professional impact
+
+
+## Conclusion and Final Assessment Guidance
+
+This mock examination covers a comprehensive range of time series analysis techniques essential for financial data analytics. The solutions demonstrate the application of descriptive, analytical, and forecasting methods to various time series data with different characteristics. Let's summarize the key assessment criteria that apply across all questions:
+
+### Overall Assessment Criteria
+
+**Data Visualization Excellence (applicable to all questions)**
+- Professional presentation with appropriate titles, labels, and annotations
+- Use of visual elements to highlight key patterns and outliers
+- Selection of appropriate visualization types for different analytical purposes
+- Clear communication of insights through visual means
+
+**Technical Accuracy (applicable to all questions)**
+- Correct implementation of statistical methods
+- Appropriate selection of models based on data characteristics
+- Accurate interpretation of statistical outputs
+- Recognition of limitations in chosen approaches
+
+**Analytical Depth (applicable to all questions)**
+- Connection of statistical findings to real-world context
+- Consideration of alternative approaches where appropriate
+- Critical evaluation of results and their implications
+- Balanced discussion of strengths and limitations
+
+**Communication Quality (applicable to all questions)**
+- Clear explanation of technical concepts
+- Logical flow of analysis and reasoning
+- Appropriate use of technical terminology
+- Concise yet comprehensive responses
+
+### Final Guidance for Students
+
+When preparing for this examination, focus on:
+
+1. **Understanding the core principles** behind each time series technique rather than simply memorizing code
+2. **Practicing interpretation** of various time series patterns and statistical outputs
+3. **Developing critical thinking** about model selection and evaluation
+4. **Honing your ability** to communicate technical findings clearly
+
+Remember that in financial data analytics, the goal is not simply to apply statistical techniques correctly, but to extract meaningful insights that can inform decision-making. Your answers should demonstrate both technical competence and analytical thinking.
+
+The ability to select appropriate methods, implement them correctly, interpret results accurately, and communicate findings clearly are all essential skills that this examination aims to assess. By focusing on developing these capabilities, you will be well-prepared not only for this examination but also for applying these skills in professional contexts.
