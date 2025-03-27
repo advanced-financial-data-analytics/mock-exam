@@ -1,6 +1,6 @@
 ---
 title: "Solutions"
-subtitle: "Mock Exam 2024"
+subtitle: "Mock Exam 2025"
 format: pdf
 execute: 
   warning: false

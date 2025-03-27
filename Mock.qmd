@@ -1,5 +1,5 @@
 ---
-title: "Mock Exam 2024"
+title: "Mock Exam 2025"
 subtitle: "Advanced Financial Data Analytics"
 format: 
  html:
