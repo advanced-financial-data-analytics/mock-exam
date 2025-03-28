@@ -1,30 +1,58 @@
-# mock-exam
-- This practice assessment is the same format as the final exam.
-- It adheres to the below academic integrity rules.
-- Before the exam you will be invited to workspace on q-rap rstudio cloud where you must complete the exam in the allocated time.
-- Once on this exam workspace, there will be an assignment titled “may-exam”
-- This final exam is worth 50%, you will have two hours to answer a total of three questions. 
-- Complete all questions in section 1 and one question in section 2.
-- It is your responsibility to make sure the quarto document renders to HTML appropriately, before you export and submit to Canvas.
+# FIN7028: Advanced Financial Data Analytics - Mock Exam Announcement
 
-# Before you begin
+## Mock Exam Resources Now Available
 
->1. This is the invite to the mock-exam workspace [invite](https://sso.posit.cloud/q-rap?redirect=https%3A%2F%2Fposit.cloud%2Fspaces%2F488697%2Fjoin%3Faccess_code%3DVUadBS0ooGYsyQiK6u7NeP39oJc10jWgp3IQlJ2G)
->2. Click on the assignment entitled “mock-exam” to create your own copy
->3. Open this project and begin the exam by populating the Mock.qmd file.
->4. Make sure packages `ffp2,knitr,tsfe` are loaded by running `(.packages())` in console.
+I'm pleased to announce that the mock exam for Advanced Financial Data Analytics is now available. This practice assessment mirrors the format of the final exam and will help you prepare effectively.
 
+### Access the Mock Exam
 
-## Statement of integrity
+1. **Mock Exam Environment**: Click this link to access the mock exam workspace on Posit Cloud: [Mock Exam Workspace](https://sso.posit.cloud/q-rap?redirect=https%3A%2F%2Fposit.cloud%2Fspaces%2F514516%2Fjoin%3Faccess_code%3DaGuiHH5gv_2uVJOi5F1tQUewXc16FoAMzI90XWpc)
 
-By submitting the work, I declare that:
+2. **Create Your Personal Copy**: After accessing the workspace, click on the assignment entitled "mock-exam" to create your own private copy where you can practice.
 
-1. I have read and understood the [University regulations relating to academic offences, including collusion and plagiarism](http://www.qub.ac.uk/directorates/AcademicStudentAffairs/AcademicAffairs/GeneralRegulations/Procedures/ProceduresforDealingwithAcademicOffences/)
+3. **Solutions Guide**: A comprehensive solutions guide is available for your reference after you've attempted the mock exam. This includes detailed explanations, model answers, and assessment guidance.
 
-2. The submission is my own original work, and I have not collaborated with others or an AI assistant such as ChatGPT;
+### Exam Format and Process
 
-4. All sources used, published or unpublished, have been acknowledged;
+The mock exam (and final exam) follow this structure:
 
-5. I give my consent for the work to be scanned using plagiarism detection software.
+- **Duration**: 2 hours
+- **Structure**: Complete both questions in Section 1 (90 marks) and choose one question from Section 2 (50 marks)
+- **Total**: The exam is worth 50% of your final grade
 
-6. You agree to complete an oral assessment if requested to do so.
+### Important Technical Instructions
+
+For both the mock and final exam:
+
+1. **Workspace Setup**: Everything will be automatically configured when you click the assignment link - no need to create files or upload data.
+
+2. **Required Packages**: Ensure packages `fpp2`, `knitr`, and `forecast` are loaded (verify with `.packages()` in the console).
+
+3. **Save Frequently**: Use Ctrl+S or Cmd+S frequently to save your work as you progress.
+
+4. **Submission Process**: 
+   - For the mock: Submit your final HTML when you're satisfied with your answers
+   - For the final exam: Your work will be automatically saved and submitted when the exam period ends - no manual upload required
+
+### Academic Integrity Reminder
+
+By attempting the mock exam and final exam, you confirm that:
+
+1. You will complete the examination on your own
+2. You will not collaborate with others or use AI assistants during the examination
+3. You will not use other browser tabs, command line tools, or external resources
+4. You understand that browser activity and command line usage may be monitored
+5. You agree to complete an oral assessment if requested
+
+### Preparation Advice
+
+1. **Focus on Understanding**: Develop a thorough understanding of core principles rather than memorizing code.
+2. **Practice Interpretation**: Work on interpreting time series patterns and statistical outputs.
+3. **Critical Thinking**: Practice model selection and evaluation for different data types.
+4. **Communication**: Practice explaining technical findings clearly and concisely.
+
+### Questions?
+
+If you have any questions about the mock exam or the final examination process, please post in the discussion forum or contact me directly.
+
+Good luck with your preparation!
