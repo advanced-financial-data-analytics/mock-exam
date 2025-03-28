@@ -8,6 +8,27 @@ execute:
 embed-resources: true
 ---
 
+## Time Management Guide
+
+This two-hour examination requires careful time management:
+
+Question 1 (40 marks) - Approximately 30 minutes
+
+- Description and plotting (20 marks): 15 minutes
+- Frequency and outlier analysis (20 marks): 15 minutes
+
+Question 2 (50 marks) - Approximately 35 minutes
+
+- Analysis of five time series: 7 minutes each
+
+Choice of Question 3, 4, or 5 (50 marks) - Approximately 45 minutes
+
+- Question 3: STL decomposition and forecasting
+- Question 4: ARIMA modeling and forecasting
+- Question 5: Reflective essay on LLM collaboration
+
+Reserve 10 minutes for review and final checks
+
 ```{r}
 library(fpp2)
 library(knitr)
@@ -22,6 +43,14 @@ This solutions document demonstrates the expected depth and quality of analysis 
 2. **Visual interpretations** should connect statistical features to business/economic context where appropriate.
 3. **Statistical discussions** should include both the technical meaning and practical implications of results.
 4. **Justifications** for modelling choices should reference both graphical evidence and theoretical principles.
+
+## Cross-Question Insights
+
+The techniques covered in these questions are interconnected:
+
+- Question 1's outlier analysis informs Question 3's robust STL choice
+- Question 2's pattern identification guides Question 4's ARIMA modeling
+- Statistical methods in Questions 1-4 provide context for Question 5's LLM discussion
 
 ## Question 1
 
@@ -79,15 +108,9 @@ autoplot(gold) +
 
 From the plots, we can make the following observations:
 
--   The `gold` series shows an overall increasing trend with some
-    fluctuations. There appears to be an outlier with an unusually high
-    price. This outlier could correspond to a period of market volatility or a specific economic event that triggered a price spike.
--   The `woolyrnq` series exhibits a clear seasonal pattern, with
-    production peaking in certain quarters and declining in others.
-    There is also a slight overall downward trend, suggesting a gradual decline in the wool industry over this period.
--   The `gas` series shows an increasing trend with some seasonal
-    variation. The seasonality appears to be less pronounced compared to
-    the `woolyrnq` series, indicating more stable year-round demand with gradual production growth.
+- The `gold` series shows an overall increasing trend with some fluctuations. There appears to be an outlier with an unusually high price. This outlier could correspond to a period of market volatility or a specific economic event that triggered a price spike.
+- The `woolyrnq` series exhibits a clear seasonal pattern, with production peaking in certain quarters and declining in others. There is also a slight overall downward trend, suggesting a gradual decline in the wool industry over this period.
+- The `gas` series shows an increasing trend with some seasonal variation. The seasonality appears to be less pronounced compared to the `woolyrnq` series, indicating more stable year-round demand with gradual production growth.
 
 b.  Frequency of each series:
 
@@ -103,16 +126,14 @@ frequency(gas)
 ```
 
 The output reveals that: 
+
 - The `gold` series has a frequency of 1, indicating daily data observed on trading days. 
 - The `woolyrnq` series has a frequency of 4, indicating quarterly data, which aligns with the seasonal patterns observed in the time plot. 
 - The `gas` series has a frequency of 12, indicating monthly data, which explains the finer granularity of seasonal patterns compared to the wool series.
 
 c.  Checking for outliers:
 
-To check for outliers in each series, we can use various methods such as
-visual inspection of plots, examining summary statistics, or applying
-statistical tests. Let's start with a simple visual approach using
-histograms and boxplots.
+To check for outliers in each series, we can use various methods such as visual inspection of plots, examining summary statistics, or applying statistical tests. Let's start with a simple visual approach using histograms and boxplots.
 
 ```{r}
 #| echo: true
@@ -129,6 +150,7 @@ boxplot(gas, main = "Gas")
 ```
 
 From the histograms and boxplots, we can observe that: 
+
 - The `gold` series has an extreme outlier on the higher end, which is consistent with our observation from the time series plot. This outlier significantly exceeds the upper whisker of the boxplot, indicating a value that deviates substantially from the general distribution.
 - The `woolyrnq` and `gas` series do not show any clear outliers based on these visual methods, suggesting more consistent patterns in production volumes over time.
 
@@ -143,12 +165,9 @@ outlier_index <- which.max(gold)
 gold[outlier_index]
 ```
 
-The outlier value is `r gold[which.max(gold)]`, which is significantly
-higher than the other prices in the series.
+The outlier value is significantly higher than the other prices in the series.
 
-To further confirm that this is indeed an outlier, we can calculate the
-z-score of the outlier value and compare it to a threshold (e.g., 3 or
-4). A z-score greater than the threshold indicates a probable outlier.
+To further analyse that this is indeed an outlier, we can calculate the z-score of the outlier value and compare it to a threshold (e.g., 3 or 4). A z-score greater than the threshold indicates a probable outlier.
 
 ```{r}
 #| echo: true
@@ -157,42 +176,86 @@ z_score <- (gold[outlier_index] - mean(gold,na.rm=T)) / sd(gold,na.rm=T)
 z_score
 ```
 
-The z-score of `r round(z_score, 2)` is much greater than the typical
-threshold of 3 or 4, confirming that the identified value is an outlier.
+The z-score of `r round(z_score, 2)` is much greater than the typical threshold of 3 or 4, confirming that the identified value is an outlier.
 
-In summary, based on the visual inspection and statistical analysis, we
-can conclude that the `gold` series contains a significant outlier at
-the observation with the highest price. This outlier is substantially
-larger than the other prices in the series and lies far beyond the
-normal range of the data. It is important to investigate the cause of
-this outlier and consider its impact on any further analysis or modeling
-of the `gold` series.
+In summary, based on the visual inspection and statistical analysis, we can conclude that the `gold` series contains a significant outlier at the observation with the highest price. This outlier is substantially larger than the other prices in the series and lies far beyond the normal range of the data. It is important to investigate the cause of this outlier and consider its impact on any further analysis or modelling of the `gold` series.
 
-The `woolyrnq` and `gas` series do not exhibit any clear outliers based
-on the methods used in this analysis. However, it is always a good
-practice to use multiple outlier detection techniques and consider the
-domain knowledge and context of the data to make robust conclusions
-about the presence of outliers.
+The `woolyrnq` and `gas` series do not exhibit any clear outliers based on the methods used in this analysis. However, it is always good practice to use multiple outlier detection techniques and consider the domain knowledge and context of the data to make robust conclusions about the presence of outliers.
+
+### Ethical Considerations for Economic Data Analysis
+
+Housing Sales:
+
+- Acknowledge potential sampling biases in data collection
+- Consider socioeconomic factors affecting housing accessibility
+- Note limitations of aggregated national data
+
+Accidental Deaths:
+
+- Handle sensitive data with appropriate care
+- Consider demographic and regional variations
+- Acknowledge potential reporting inconsistencies
+
+Brick Production:
+
+- Consider environmental impact of production trends
+- Acknowledge potential reporting biases from different manufacturers
+- Note impact of regulatory changes on historical data
+- Consider worker safety and labour conditions in interpretation
+
+Sunspot Area:
+
+- Acknowledge limitations of historical measurement techniques
+- Consider impact of technological advances on measurement accuracy
+- Note importance of consistent methodology across long time periods
+- Discuss implications for climate and environmental studies
+
+Gasoline Production:
+
+- Consider environmental implications of production trends
+- Acknowledge impact on climate change discussions
+- Note socioeconomic factors affecting consumption patterns
+- Consider geopolitical factors influencing production decisions
+- Discuss energy security and sustainability implications
+
+Each of these series requires careful consideration of:
+
+- Data collection methodologies
+- Potential reporting biases
+- Societal implications of trends
+- Environmental impacts
+- Economic justice considerations
+- Policy implications
 
 ### Assessment Guidance - Question 1 ###
 
 **Excellent answers (70%+) will:**
-- Produce professionally formatted visualizations with appropriate annotations
+
+- Produce professionally formatted visualisations with appropriate annotations
 - Clearly identify and quantify outliers using multiple methods
 - Provide contextual interpretation of the frequency results
 - Offer thoughtful discussion about the implications of outliers for further analysis
 
 **Good answers (60-69%) will:**
+
 - Create correct visualizations with proper labels
 - Identify outliers using at least one statistical method
 - Correctly interpret the frequency results
 - Discuss basic implications of outliers
 
 **Satisfactory answers (50-59%) will:**
+
 - Produce basic but correct visualizations
 - Identify obvious outliers visually
 - State the frequency of each series
 - Provide minimal interpretation of results
+
+:::{.callout-important}
+**Note on memorisation:** 
+
+Examiners can distinguish between memorised descriptions and genuine analysis. The exam will feature different datasets with unique characteristics. Focus on developing the skill to identify patterns and outliers in any time series, rather than memorising specific descriptions of the mock exam data.
+
+:::
 
 ## Question 2
 
@@ -242,11 +305,15 @@ ggAcf(hsales) +
 
 -   The time plot shows a clear seasonal pattern and some long-term
     fluctuations. These fluctuations likely correspond to economic cycles in the US housing market, with visible dips during recessionary periods.
+
 -   The seasonal plot confirms a strong and consistent seasonal pattern, with sales typically peaking in spring and summer months (March-August) and dropping in winter.
+
 -   The subseries plot shows that the seasonal pattern is similar across
     years, indicating stability in the housing market's seasonal dynamics despite economic changes.
+
 -   The lag plot indicates a positive relationship between consecutive
     observations, possibly due to trend or seasonal effects. This suggests momentum in the housing market, where strong sales months tend to be followed by relatively strong months.
+
 -   The ACF plot shows significant autocorrelations at multiples of lag
     12, confirming the presence of annual seasonality that real estate analysts would expect.
 
@@ -291,12 +358,16 @@ ggAcf(usdeaths) +
 ```
 
 -   The time plot shows a clear seasonal pattern but no obvious trend. This suggests that the overall mortality risk remained relatively stable during this period, though with pronounced seasonal variation.
+
 -   The seasonal plot confirms the presence of seasonality, with higher
     deaths in summer months (particularly July-August). This seasonal peak may be associated with increased outdoor activities, travel, and water-related accidents during summer.
+
 -   The subseries plot shows that the seasonal pattern is consistent
     across years, indicating stable seasonal risk factors throughout the observation period.
+
 -   The lag plot shows a positive relationship between consecutive
     observations due to seasonality, with a clear clustering pattern revealing the seasonal grouping.
+
 -   The ACF plot has significant autocorrelations at multiples of lag
     12, confirming the annual seasonality pattern that public health officials would monitor.
 
@@ -342,12 +413,16 @@ ggAcf(bricksq) +
 
 -   The time plot shows a strong increasing trend and some seasonal
     fluctuations. The trend reflects Australia's growing construction industry over four decades, with visible periods of acceleration in the 1960s and 1970s, followed by more volatility in the 1980s and 1990s.
+
 -   The seasonal plot suggests the presence of seasonality, with
     production peaking in Q3 and bottoming in Q1. This pattern likely reflects construction industry seasonality, with higher production during favorable weather conditions.
+
 -   The subseries plot confirms that the seasonal pattern is generally
     consistent across years, though the magnitude of seasonal fluctuations appears to increase with the overall production level.
+
 -   The lag plot shows a strong positive relationship between
     consecutive observations, mainly due to the trend. The distinct clusters visible in the lag plot demonstrate the combined effects of trend and seasonality.
+
 -   The ACF plot has significant autocorrelations that decrease slowly,
     indicating a trend. There are also spikes at multiples of lag 4,
     suggesting quarterly seasonality typical of construction-related industries.
@@ -382,11 +457,10 @@ ggAcf(sunspotarea) +
 
 -   The time plot shows a clear cyclical pattern with a period of around
     11 years. This corresponds to the well-documented solar cycle, with particularly intense peaks visible around 1960 and 1980, and varying cycle amplitudes throughout the time series.
--   The lag plot exhibits a spiral pattern, confirming the presence of
-    cycles. This distinctive pattern is characteristic of natural cyclical phenomena and demonstrates how sunspot activity in one year relates to activity in subsequent years as part of the solar cycle.
--   The ACF plot has a sinusoidal pattern, alternating between positive
-    and negative autocorrelations, which is characteristic of cyclical
-    behavior. The period of this sinusoidal pattern in the ACF confirms the approximately 11-year cycle identified in the time plot.
+
+-   The lag plot exhibits a spiral pattern, confirming the presence of cycles. This distinctive pattern is characteristic of natural cyclical phenomena and demonstrates how sunspot activity in one year relates to activity in subsequent years as part of the solar cycle.
+
+-   The ACF plot has a sinusoidal pattern, alternating between positive and negative autocorrelations, which is characteristic of cyclical behaviour. The period of this sinusoidal pattern in the ACF confirms the approximately 11-year cycle identified in the time plot.
 
 5.  `gasoline` (US finished motor gasoline product, monthly, 1991–2016):
 
@@ -423,10 +497,13 @@ ggAcf(gasoline) +
 ```
 
 -   The time plot shows an increasing trend and strong seasonality. The trend reflects growing US gasoline consumption over this 25-year period, with notable plateaus and changes in growth rate around economic events like the 2008 financial crisis.
+
 -   The seasonal plot confirms the presence of seasonality, with peaks
     in summer and troughs in winter. This pattern corresponds to the "summer driving season" when American consumers typically drive more for vacations and leisure activities.
+
 -   The lag plot is not very informative due to the strong seasonality
     and trend, though the positive correlation between adjacent observations is clearly visible.
+
 -   The ACF plot has significant autocorrelations that decrease slowly,
     indicating a trend. The seasonal spikes are also evident, confirming
     seasonality with a 12-month cycle typical of energy consumption patterns.
@@ -447,27 +524,46 @@ the given time series. These patterns have important implications for forecastin
 ### Assessment Guidance - Question 2 ###
 
 **Excellent answers (70%+) will:**
-- Produce comprehensive visualizations for each time series with meaningful annotations
+
+- Produce comprehensive visualisations for each time series with meaningful annotations
 - Identify and distinguish between trend, seasonal, and cyclical patterns with precision
 - Connect observed patterns to potential real-world economic or physical phenomena
 - Make insightful observations about implications for time series modeling approaches
 
 **Good answers (60-69%) will:**
-- Create appropriate visualizations for each time series
+
+- Create appropriate visualisations for each time series
 - Correctly identify the main patterns in each series
 - Provide reasonable interpretations of the observed patterns
 - Draw basic conclusions about appropriate modeling approaches
 
 **Satisfactory answers (50-59%) will:**
-- Produce basic visualizations for each series
+
+- Produce basic visualisations for each series
 - Identify obvious patterns like strong seasonality or trends
 - Provide minimal interpretation of the observed patterns
+
+:::{.callout-important}
+**Note on memorisation:** 
+
+Simply reproducing memorised descriptions from the mock solutions will not earn high marks, as the exam will present different time series with unique characteristics. The key skill being assessed is your ability to analyze any time series data systematically, not your recall of specific mock examples.
+:::
 
 ## Question 3
 
 In this question, we will analyse the `bricksq` data, which represents
 the Australian quarterly clay brick production, using STL decomposition
 and various forecasting methods.
+
+### Understanding STL Parameters
+
+Before implementation, key parameters to consider:
+- s.window: Controls seasonal component flexibility
+- robust: Handles outliers in decomposition
+- periodic: Assumes consistent seasonality
+- lambda: Box-Cox transformation parameter
+
+These choices affect our decomposition results because...
 
 a.  STL decomposition and trend-cycle and seasonal indices:
 
@@ -487,8 +583,11 @@ autoplot(fit) +
 ```
 
 The STL decomposition reveals the following: 
+
 - The data exhibits a strong increasing trend over time, with periods of accelerated growth (especially in the 1960s and early 1970s) followed by periods of relative stability or slower growth. 
+
 - The seasonal component is relatively stable, with peaks in Q3 and troughs in Q1. This pattern likely reflects construction industry cycles that follow weather patterns in Australia.
+
 - The remainder component shows some fluctuations, particularly during the 1970s and early 1980s, suggesting periods of higher volatility that may correspond to economic shocks or policy changes affecting the construction sector.
 
 As the seasonality appears to be stable over time, we used a periodic
@@ -594,6 +693,7 @@ kable(accuracy_comparison,
 ```
 
 Different approaches may be preferred depending on specific criteria:
+
 - STL+Naive: Simple, interpretable, works well with strong seasonality
 - STL+ETS: Captures changing patterns, better for evolving seasonal patterns
 - ARIMA: More sophisticated for complex autocorrelation structures
@@ -610,8 +710,11 @@ checkresiduals(fc)
 ```
 
 The residual diagnostics show that: 
+
 - The standardised residuals appear to be approximately normally distributed, suggesting that the model captures the systematic patterns reasonably well.
+
 - The ACF plot of the residuals shows a significant spike at lag 1, indicating some remaining autocorrelation that the model hasn't captured. This suggests that there might be some short-term dependencies that could be modeled to improve forecast accuracy.
+
 - The p-values for the Ljung-Box test are below 0.05 for most lags, suggesting that the residuals are not entirely uncorrelated. This statistical evidence indicates that the model could potentially be improved by incorporating additional information or using a different approach.
 
 While the residuals are not perfect, they are reasonably close to being
@@ -698,6 +801,7 @@ set.
 ### Assessment Guidance - Question 3 ###
 
 **Excellent answers (70%+) will:**
+
 - Correctly implement and interpret STL decomposition with appropriate transformation
 - Provide thorough interpretation of trend, seasonal, and remainder components
 - Successfully implement and compare multiple forecasting approaches
@@ -705,17 +809,24 @@ set.
 - Make justified recommendations about the most suitable forecasting method
 
 **Good answers (60-69%) will:**
+
 - Implement STL decomposition correctly
 - Provide basic interpretations of decomposition components
 - Compare at least two forecasting methods using appropriate metrics
 - Demonstrate understanding of the advantages and limitations of different approaches
 
 **Satisfactory answers (50-59%) will:**
+
 - Implement STL decomposition with at most minor errors
 - Provide limited interpretation of results
 - Show basic understanding of forecasting comparison
 - Make simple observations about forecast performance
 
+:::{.callout-important}
+**Note on memorisation:** 
+
+The exam will present different time series with unique decomposition patterns and forecasting challenges. Examiners can easily spot memorised code and interpretations that don't match the specific characteristics of the exam data. Focus on understanding the logic behind STL decomposition and how different forecasting methods respond to various time series features, rather than memorising specific code sequences or interpretations.
+:::
 
 ## Question 4
 
@@ -754,6 +865,7 @@ The plot shows fluctuations in bituminous coal production over the given period.
 While there are clear fluctuations around the long-term pattern, there is no obvious seasonality or consistent cyclicity evident in this annual data series.
 
 ## THEORETICAL NOTE:
+
 The absence of seasonality in annual data is expected. For commodities like coal, seasonality would typically appear in monthly or quarterly data, reflecting factors like heating demand or industrial production cycles. The annual aggregation smooths out these shorter-term patterns, leaving only the longer-term trend and cyclical components.
 
 b.  Identifying the ARIMA model:
@@ -876,16 +988,14 @@ The forecasts obtained from the `forecast` function are very close to
 the manually calculated values. Any minor differences can be attributed
 to rounding errors in the manual calculations.
 
-The `forecast` function uses the maximum likelihood estimates of the
-model parameters and computes the forecasts based on these estimates. It
-also provides additional information, such as the standard errors of the
-forecasts and the confidence intervals, which are crucial for understanding the uncertainty around point forecasts.
+The `forecast` function utilises the maximum likelihood estimates of the model parameters and computes the forecasts based on these estimates. It also provides additional information, such as the standard errors of the forecasts and the confidence intervals, which are crucial for understanding the uncertainty around point forecasts.
 
 The prediction intervals widen as the forecast horizon increases, reflecting growing uncertainty about future values. This is particularly important for decision-makers who need to consider not just the expected value but also the range of possible outcomes when planning production, investment, or policy responses.
 
 ### Assessment Guidance - Question 4 ###
 
 **Excellent answers (70%+) will:**
+
 - Correctly identify the ARIMA model components and explain their meaning
 - Thoroughly justify the model choice using ACF and PACF patterns
 - Accurately calculate multi-step forecasts with clear mathematical explanation
@@ -893,6 +1003,7 @@ The prediction intervals widen as the forecast horizon increases, reflecting gro
 - Compare manual calculations with R output and explain any differences
 
 **Good answers (60-69%) will:**
+
 - Correctly identify the ARIMA model structure
 - Provide reasonable justification for model choice using ACF/PACF
 - Calculate forecasts with minor errors
@@ -900,12 +1011,22 @@ The prediction intervals widen as the forecast horizon increases, reflecting gro
 - Successfully compare with R function output
 
 **Satisfactory answers (50-59%) will:**
+
 - Identify the basic structure of the ARIMA model
 - Show understanding of ACF/PACF interpretation
 - Attempt forecast calculations with conceptual understanding
 - Provide minimal interpretation of results
 
+:::{.callout-important}
+**Note on memorisation:** 
+
+The exam will feature a different time series with unique autocorrelation structures and possibly a different ARIMA specification. Memorising the calculations from this mock example without understanding the underlying principles will be ineffective. Focus on mastering the process of forecast calculation and the interpretation of model diagnostics rather than memorising specific code sequences or interpretations.
+:::
+
+
 ## Question 5
+
+### Part A: Reflective Essay (35 marks)
 
 Reflective Essay on Collaborating with Large Language Models for
 Analytics Projects
@@ -920,7 +1041,7 @@ One of the most significant benefits of collaborating with LLMs is their
 ability to process and analyse vast amounts of textual data efficiently.
 In my project, I was tasked with extracting insights from a large corpus
 of customer reviews and feedback. Traditionally, this would have
-required countless hours of manual reading and categorization. However,
+required countless hours of manual reading and categorisation. However,
 by leveraging the natural language understanding capabilities of LLMs, I
 was able to automate the process and quickly identify key themes,
 sentiment patterns, and actionable insights. This not only saved time
@@ -983,16 +1104,19 @@ navigate this exciting frontier, it is essential to develop robust
 ethical frameworks and maintain human oversight to ensure the
 responsible and beneficial use of these powerful AI tools.
 
+### Part B: Benefits and Limitations Analysis (15 marks)
+
 ## Benefits and Limitations of Collaborating with Large Language Models
 
 ### Benefits
-1. **Efficient data processing**: LLMs can analyze vast amounts of textual data quickly, identifying patterns that would take humans significantly longer to discover.
+
+1. **Efficient data processing**: LLMs can analyse vast amounts of textual data quickly, identifying patterns that would take humans significantly longer to discover.
    
 2. **Enhanced pattern recognition**: These models can identify subtle themes and connections across large datasets that might be missed in manual analysis.
    
 3. **Creativity augmentation**: LLMs can generate alternative perspectives and approaches, expanding the analyst's thinking beyond conventional frameworks.
    
-4. **Code generation assistance**: For data analysts, LLMs can suggest code implementations, debug existing code, and recommend optimization strategies.
+4. **Code generation assistance**: For data analysts, LLMs can suggest code implementations, debug existing code, and recommend optimisation strategies.
    
 5. **Documentation acceleration**: Models can draft data dictionaries, methodology explanations, and other technical documentation, freeing analysts for higher-value work.
    
@@ -1001,9 +1125,10 @@ responsible and beneficial use of these powerful AI tools.
 7. **Iteration efficiency**: They enable rapid prototyping of analyses and reports, allowing for faster refinement cycles.
 
 ### Limitations
+
 1. **Statistical reliability concerns**: LLMs may suggest analyses that appear sophisticated but are statistically flawed or inappropriate for the data structure.
    
-2. **Domain knowledge gaps**: These models lack specialized expertise in many fields, potentially missing critical domain-specific considerations.
+2. **Domain knowledge gaps**: These models lack specialised expertise in many fields, potentially missing critical domain-specific considerations.
    
 3. **Methodological transparency issues**: The basis for LLM suggestions is often opaque, making it difficult to validate methodological soundness.
    
@@ -1018,6 +1143,7 @@ responsible and beneficial use of these powerful AI tools.
 ### Assessment Guidance - Question 5 ###
 
 **Excellent answers (70%+) will:**
+
 - Demonstrate critical reflection on both benefits and limitations of LLM collaboration
 - Provide specific, concrete examples from personal or hypothetical analytics workflows
 - Consider ethical dimensions and professional responsibilities
@@ -1025,6 +1151,7 @@ responsible and beneficial use of these powerful AI tools.
 - Present a balanced, nuanced perspective that acknowledges complexity
 
 **Good answers (60-69%) will:**
+
 - Identify several key benefits and limitations
 - Provide some specific examples of LLM applications in analytics
 - Consider basic ethical concerns
@@ -1032,37 +1159,48 @@ responsible and beneficial use of these powerful AI tools.
 - Present a relatively balanced view
 
 **Satisfactory answers (50-59%) will:**
+
 - List some benefits and limitations
 - Provide general descriptions without specific examples
 - Show limited consideration of ethical dimensions
 - Offer basic reflections on professional impact
 
+::: {.callout-important}
+**Note on memorisation:** 
+
+The reflective essay question tests your ability to think critically about emerging technologies in analytics. Reproducing memorised paragraphs from the mock solution will be obvious to examiners. Instead, develop your own perspective on LLM collaboration based on genuine understanding and reflection. Personalised examples and thoughtful analysis of benefits and limitations specific to your understanding will earn significantly higher marks than memorised content.
+
+:::
 
 ## Conclusion and Final Assessment Guidance
 
-This mock examination covers a comprehensive range of time series analysis techniques essential for financial data analytics. The solutions demonstrate the application of descriptive, analytical, and forecasting methods to various time series data with different characteristics. Let's summarize the key assessment criteria that apply across all questions:
+This mock examination covers a comprehensive range of time series analysis techniques essential for financial data analytics. The solutions demonstrate the application of descriptive, analytical, and forecasting methods to various time series data with different characteristics. Let's summarise the key assessment criteria that apply across all questions:
 
 ### Overall Assessment Criteria
 
-**Data Visualization Excellence (applicable to all questions)**
+**Data Visualisation Excellence (applicable to all questions)**
+
 - Professional presentation with appropriate titles, labels, and annotations
 - Use of visual elements to highlight key patterns and outliers
 - Selection of appropriate visualization types for different analytical purposes
 - Clear communication of insights through visual means
 
 **Technical Accuracy (applicable to all questions)**
+
 - Correct implementation of statistical methods
 - Appropriate selection of models based on data characteristics
 - Accurate interpretation of statistical outputs
 - Recognition of limitations in chosen approaches
 
 **Analytical Depth (applicable to all questions)**
+
 - Connection of statistical findings to real-world context
 - Consideration of alternative approaches where appropriate
 - Critical evaluation of results and their implications
 - Balanced discussion of strengths and limitations
 
 **Communication Quality (applicable to all questions)**
+
 - Clear explanation of technical concepts
 - Logical flow of analysis and reasoning
 - Appropriate use of technical terminology
@@ -1072,11 +1210,27 @@ This mock examination covers a comprehensive range of time series analysis techn
 
 When preparing for this examination, focus on:
 
-1. **Understanding the core principles** behind each time series technique rather than simply memorizing code
-2. **Practicing interpretation** of various time series patterns and statistical outputs
+1. **Understanding the core principles** behind each time series technique rather than simply memorising code
+2. **Practising interpretation** of various time series patterns and statistical outputs
 3. **Developing critical thinking** about model selection and evaluation
 4. **Honing your ability** to communicate technical findings clearly
 
 Remember that in financial data analytics, the goal is not simply to apply statistical techniques correctly, but to extract meaningful insights that can inform decision-making. Your answers should demonstrate both technical competence and analytical thinking.
 
 The ability to select appropriate methods, implement them correctly, interpret results accurately, and communicate findings clearly are all essential skills that this examination aims to assess. By focusing on developing these capabilities, you will be well-prepared not only for this examination but also for applying these skills in professional contexts.
+
+### Warning Against Rote Memorisation
+
+It is important to note that this mock examination and its solutions are designed as a learning tool, not as a template to be memorised. The actual examination will present different datasets with unique characteristics that require adaptive analytical thinking.
+
+**Limitations of memorisation:**
+
+1. **Different data characteristics**: The actual exam will feature datasets with different patterns, outliers, and structural features that will require you to adapt your approach.
+
+2. **Changing parameters**: Even similar questions will involve different model specifications, timeframes, or forecast horizons that cannot be addressed through memorised solutions.
+
+3. **Interpretation emphasis**: A substantial portion of marks are allocated to interpretation and justification, which must be specific to the data presented in the exam.
+
+4. **Alternative approaches**: Examiners may specifically request different methodologies from those demonstrated in this mock.
+
+The most successful examination strategy is to develop a thorough understanding of the underlying concepts and methods, allowing you to apply them flexibly to any time series data you encounter.

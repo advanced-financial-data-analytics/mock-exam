@@ -1,0 +1,326 @@
+---
+title: "Mock Exam 2025"
+subtitle: "Advanced Financial Data Analytics"
+format: 
+ html:
+   embed-resources: true
+   css: styles.css
+   include-in-header:
+     - text: |
+         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+::: {.content-hidden when-format="pdf"}
+<div style="text-align: right; margin-bottom: 20px;">
+<a href="mock-solutions.pdf" class="btn btn-primary" download>
+  <i class="fas fa-download"></i> Download Solutions PDF
+</a>
+</div>
+:::
+
+# Mock Exam Access
+
+To access the mock exam environment on Posit Cloud, 
+click here: [Mock Exam Workspace](https://sso.posit.cloud/q-rap?redirect=https%3A%2F%2Fposit.cloud%2Fspaces%2F514516%2Fjoin%3Faccess_code%3DaGuiHH5gv_2uVJOi5F1tQUewXc16FoAMzI90XWpc)
+
+This link will take you to the mock exam workspace where you can practice under conditions similar to the actual examination.
+
+# Exam Environment Instructions
+
+This mock exam is designed to simulate the environment and format of your actual examination. Please read the following instructions carefully to understand how the exam will be administered:
+
+## Accessing Your Personalised Exam
+
+1. At the start of the examination period, you will be provided with a specific URL link in the official exam paper on Canvas.
+
+2. Clicking this link will take you to the designated exam workspace on Posit Cloud. This is a separate workspace specifically created for the examination.
+
+3. **Important**: When you click the link, the system will automatically create a personalised copy of the exam template for you. This will contain all necessary R files, data, and an answer document template.
+
+4. You do not need to create any new files or projects - everything will be set up for you in this personalised workspace.
+
+## Working in the Exam Environment
+
+1. All your work should be completed within the Posit Cloud environment. You will see an R Markdown file where you should input your answers.
+
+2. Required packages (`fpp2`, `knitr`, `forecast`, etc.) will be pre-installed in the workspace.
+
+3. **Save your work frequently** throughout the exam by clicking the "Save" button or using the keyboard shortcut (Ctrl+S or Cmd+S). This is crucial to prevent any loss of work.
+
+4. You can run code chunks and see outputs in real-time while working on your answers.
+
+## Submission Process
+
+1. You do **not** need to upload anything to Canvas after completing the exam.
+
+2. Your work is automatically saved in the Posit Cloud workspace as you progress.
+
+3. At the end of the examination period, the workspace will automatically close and your final saved version will be submitted.
+
+4. Ensure that all your work is saved at least 5 minutes before the end of the exam period to avoid any issues.
+
+## Important Notes
+
+- The workspace will only be accessible during the examination period and will close automatically when the exam time ends.
+- If you encounter any technical issues during the exam, notify the invigilator immediately.
+- Your work is private and cannot be viewed by other students.
+- All necessary data for the exam will be pre-loaded in the workspace.
+
+# Exam Structure
+
+This exam is worth 50% of your final grade.  
+You will have two hours to answer a total of three questions. 
+You must complete both questions in section 1 and choose one question from section 2.
+
+
+# Academic integrity pledge
+>By submitting your answers to this examination paper, you confirm that: 
+
+>1. You have completed the examination on your own; 
+2. You did not collaborate with a third party or AI assistant during the examination; 
+3. You did not use any other browser tabs, command line tools, or external resources during the examination;
+4. You understand that the lecturer and AI monitoring systems will be tracking browser activity and command line usage;
+5. You agree to complete an oral assessment if requested to do so. 
+
+>Please note that plagiarism involves deliberately or inadvertently presenting someone else's ideas as your own. It is cheating. It does not just apply to direct quotations but summarised and paraphrased arguments too. Plagiarism is treated very seriously and usually results in disciplinary action.
+
+**Read the [README](README.md) instructions**
+
+# Before you begin
+
+1. Click on exam assignment to get your own copy.
+
+2. Make sure packages `fpp2,knitr,forecast` are loaded by running `(.packages())` in console.
+
+```{r setup}
+#| include: false
+
+# Load required packages
+if (!require("fpp2")) install.packages("fpp2")
+if (!require("knitr")) install.packages("knitr")
+if (!require("forecast")) install.packages("forecast")
+
+library(fpp2)
+library(knitr)
+library(forecast)
+
+# Verify data is available
+stopifnot("gold" %in% data(package = "forecast")$results[, "Item"])
+```
+
+
+# Section 1
+## Question 1
+> The following commodities series are avaliable in the `forecast` package; `gold`, `woolyrnq` and `gas`.  
+
+> a. Use an appropriate function to describe each series and write up your findings in your own words (10 marks)
+
+```{r}
+gold
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+> b. Plot each of these in separate plots in a professional manner. Describe what you see in your own words. (10 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+> c. What is the frequency of each commodity series? (5 marks)
+
+```{r}
+# Type your coded answer here
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+> d. Check each series for outliers. Which observations in which series do you suspect is an outlier? Briefly explain your answer. (15 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+## Question 2
+> Use the appropriate time series graphics functions to explore features from the following time series: `hsales`, `usdeaths`, `bricksq`, `sunspotarea`, `gasoline`.  
+
+> For each time series describe (using text below each R code chunk) the salient features of the data that an ethical econometrician should consider (50 marks)
+
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+
+```
+
+
+# Section 2
+## Question 3
+>We will use the `bricksq` data (Australian quarterly clay brick production) for this exercise.
+
+> a. Use an STL decomposition to calculate the trend-cycle and seasonal indices. Briefly discuss your results (10 Marks) use `help(stl)` to research this function.
+
+```r{}
+help(stl)
+```
+
+You should experiment with having fixed or changing seasonality.  There's some change in variation, and `BoxCox.lambda(bricksq)` gives a value of 0.25.
+
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+> b. Compute and plot the seasonally adjusted data. (5 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+> c. Use a naive method to produce forecasts of the seasonally adjusted data. (5 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+> d. Use the `stlf` function to reseasonalize the results, giving forecasts for the original data. (10 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+> e. Do the residuals look uncorrelated? Provide statistical evidence and discuss your results (5 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+Comment on the results here
+
+
+> f. Repeat with a robust STL decomposition (using argument `robust=TRUE`). Does it make much difference? (5 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+Comment on the results here
+
+
+> g. Compare forecasts from `stlf` with those from `snaive`, using a test set comprising the last 2 years of data. Which would you use as a professional forecaster? Explain your answer. (10
+marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+Comment on the results here
+
+## Question 4
+
+> a. Plot the annual bituminous coal production in the United States from 1920 to 1968 (data set `bicoal`). Describe what you see (10 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+Comment on the results here
+
+
+> b. You decide to fit the following model to the series:
+$$y_t = c + \phi_1 y_{t-1} + \phi_2 y_{t-2} + \phi_3 y_{t-3} + \phi_4 y_{t-4} + e_t$$
+where $y_t$ is the coal production in year $t$ and $e_t$ is a white noise series.
+What sort of ARIMA model is this (i.e., what are $p$, $d$, and $q$)? (5 marks)
+
+
+
+> c. Explain why this model was chosen using the ACF and PACF. (10 marks)
+
+```{r}
+# Type the R code answer here
+# It is your responsibility to make sure the code works
+```
+
+Comment on the results here
+
+
+
+d. The last five values of the series are given below.
+
+|Year              | 1964| 1965| 1966| 1967| 1968|
+|:-----------------|----:|----:|----:|----:|----:|
+|Millions of tons  | 467 | 512 | 534 | 552 | 545 |
+
+```{r bicoalfit, echo=FALSE, cache=TRUE}
+fit <- Arima(bicoal, order=c(4,0,0))
+mu <- coef(fit)['intercept']
+phi1 <- coef(fit)['ar1']
+phi2 <- coef(fit)['ar2']
+phi3 <- coef(fit)['ar3']
+phi4 <- coef(fit)['ar4']
+intercept <- mu * (1-phi1-phi2-phi3-phi4)
+# Store rounded versions for printing
+c <- format(intercept, digits=2, nsmall=2)
+p1 <- format(phi1, digits=2, nsmall=2)
+p2 <- format(phi2, digits=2, nsmall=2)
+p3 <- format(phi3, digits=2, nsmall=2)
+p4 <- format(phi4, digits=2, nsmall=2)
+```
+
+> The estimated parameters are
+ $c = `r c`$,
+ $\phi_1 = `r p1`$,
+ $\phi_2 = `r p2`$,
+ $\phi_3 = `r p3`$, and
+ $\phi_4 = `r p4`$.
+ 
+> Without using the `forecast` function, calculate forecasts for the next three years (1969--1971). (15 marks)
+
+
+> e. Now fit the model in R and obtain the forecasts from the same model. How are they different from yours? Why? (10 marks)
+
+
+## Question 5
+> In your own words write a reflective essay on your experience collaborating with Large Language Models for your analytics project? (35 marks)
+
+> What are the benefits and limitations of such an approach? (15 marks)
