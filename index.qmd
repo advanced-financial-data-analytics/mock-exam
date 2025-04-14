@@ -1,9 +1,9 @@
 ---
 title: "Mock Exam 2025"
 subtitle: "Advanced Financial Data Analytics"
+embed-resources: true
 format: 
  html:
-   embed-resources: true
    css: styles.css
    include-in-header:
      - text: |
@@ -24,8 +24,7 @@ execute:
 
 # Mock Exam Access
 
-To access the mock exam environment on Posit Cloud, 
-click here: [Mock Exam Workspace](https://sso.posit.cloud/q-rap?redirect=https%3A%2F%2Fposit.cloud%2Fspaces%2F514516%2Fjoin%3Faccess_code%3DaGuiHH5gv_2uVJOi5F1tQUewXc16FoAMzI90XWpc)
+To access the mock exam environment on Posit Cloud, click here: [Mock Exam Workspace](https://sso.posit.cloud/q-rap?redirect=https%3A%2F%2Fposit.cloud%2Fspaces%2F488697%2Fjoin%3Faccess_code%3DVUadBS0ooGYsyQiK6u7NeP39oJc10jWgp3IQlJ2G)
 
 This link will take you to the mock exam workspace where you can practice under conditions similar to the actual examination.
 
